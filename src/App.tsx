@@ -6,13 +6,11 @@ import { useState } from 'react';
 import products from './data/products.json';
 
 const AppContainer = styled.div`
-  min-height: 100vh;
   background-color: #f5f5f5;
   width: 100vw;
 `;
 
 const MainContent = styled.main`
-  padding: 2rem;
   display: flex;
   gap: 2rem;
 
