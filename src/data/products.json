@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-002.png?v5",
+    "title": "艾爾文",
+    "code": "UA23BT/AOT-1-002",
+    "price": 90,
+    "stock": 1,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 2,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-010.png?v5",
+    "title": "里維",
+    "code": "UA23BT/AOT-1-010",
+    "price": 110,
+    "stock": 0,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 3,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-011.png?v5",
+    "title": "里維",
+    "code": "UA23BT/AOT-1-011",
+    "price": 120,
+    "stock": 1,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 4,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-022.png?v5",
+    "title": "希絲特莉亞",
+    "code": "UA23BT/AOT-1-022",
+    "price": 120,
+    "stock": 0,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 5,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-048.png?v5",
+    "title": "獸之巨人",
+    "code": "UA23BT/AOT-1-048",
+    "price": 50,
+    "stock": 4,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 6,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-053.png?v5",
+    "title": "女型巨人",
+    "code": "UA23BT/AOT-1-053",
+    "price": 120,
+    "stock": 0,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 7,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-057.png?v5",
+    "title": "超大型巨人",
+    "code": "UA23BT/AOT-1-057",
+    "price": 50,
+    "stock": 5,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 8,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-061.png?v5",
+    "title": "鎧之巨人",
+    "code": "UA23BT/AOT-1-061",
+    "price": 80,
+    "stock": 1,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 9,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-077.png?v5",
+    "title": "阿爾敏",
+    "code": "UA23BT/AOT-1-077",
+    "price": 180,
+    "stock": 0,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 10,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-089.png?v5",
+    "title": "米卡莎",
+    "code": "UA23BT/AOT-1-089",
+    "price": 180,
+    "stock": 0,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 11,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-092.png?v5",
+    "title": "艾倫",
+    "code": "UA23BT/AOT-1-092",
+    "price": 100,
+    "stock": 3,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 12,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23BT_AOT-1-094.png?v5",
+    "title": "進擊巨人",
+    "code": "UA23BT/AOT-1-094",
+    "price": 180,
+    "stock": 0,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 13,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23ST_AOT-1-105.png?v5",
+    "title": "米卡莎",
+    "code": "UA23ST/AOT-1-105",
+    "price": 22,
+    "stock": 0,
+    "category": "進擊的巨人"
+  },
+  {
+    "id": 14,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA23ST_AOT-1-107.png?v5",
+    "title": "艾倫",
+    "code": "UA23ST/AOT-1-107",
+    "price": 40,
+    "stock": 0,
+    "category": "進擊的巨人"
+  }
+] 
