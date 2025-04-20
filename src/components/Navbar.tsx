@@ -95,7 +95,7 @@ const NavSection = styled.div`
   }
 `;
 
-const NavItem = styled.a`
+const NavItem = styled(Link)`
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -106,7 +106,6 @@ const NavItem = styled.a`
   transition: color 0.2s ease;
 
   &:hover {
-    color: #FF6B00;
     text-decoration: underline;
   }
 
@@ -353,23 +352,23 @@ const Navbar = ({ onSearch }: NavbarProps) => {
           <FaChevronDown size={12} />
           <NavPopup isOpen={activePopup === 'guide'}>
             <NavSection>
-              <NavItem href="https://rugiacreation.com/ua/search" target="_blank" rel="noopener noreferrer">
+              <NavItem to="https://rugiacreation.com/ua/search" target="_blank" rel="noopener noreferrer">
                 路基亞 UA 中文卡表
                 <FaExternalLinkAlt />
               </NavItem>
-              <NavItem href="https://torecards.com/unionarenatier/#google_vignette" target="_blank" rel="noopener noreferrer">
+              <NavItem to="https://torecards.com/unionarenatier/#google_vignette" target="_blank" rel="noopener noreferrer">
                 Tier List
                 <FaExternalLinkAlt />
               </NavItem>
-              <NavItem href="https://www.unionarena-tcg.com/tc/" target="_blank" rel="noopener noreferrer">
+              <NavItem to="https://www.unionarena-tcg.com/tc/" target="_blank" rel="noopener noreferrer">
                 Union Arena 官網
                 <FaExternalLinkAlt />
               </NavItem>
-              <NavItem href="https://www.unionarena-tcg.com/tc/rules/limited.php" target="_blank" rel="noopener noreferrer">
+              <NavItem to="https://www.unionarena-tcg.com/tc/rules/limited.php" target="_blank" rel="noopener noreferrer">
                 Union Arena 禁/限卡表
                 <FaExternalLinkAlt />
               </NavItem>
-              <NavItem href="https://yuyu-tei.jp/" target="_blank" rel="noopener noreferrer">
+              <NavItem to="https://yuyu-tei.jp/" target="_blank" rel="noopener noreferrer">
                 yuyu-tei 遊遊亭 / yuyu亭
                 <FaExternalLinkAlt />
               </NavItem>
@@ -380,25 +379,23 @@ const Navbar = ({ onSearch }: NavbarProps) => {
           className="nav-popup-trigger"
           onClick={() => togglePopup('contact')}
         >
-          聯絡我們
+          幫助中心
           <FaChevronDown size={12} />
           <NavPopup isOpen={activePopup === 'contact'}>
             <NavSection>
-              <NavItem href="https://myship.7-11.com.tw/cart/easy/GM2410225591590" target="_blank" rel="noopener noreferrer">
+              <NavItem to="https://lin.ee/eRuNaiC" target="_blank" rel="noopener noreferrer">
+                LINE 官方帳號 (@520nhcdh)
+                <FaExternalLinkAlt />
+              </NavItem>
+              <NavItem to="https://myship.7-11.com.tw/cart/easy/GM2410225591590" target="_blank" rel="noopener noreferrer">
                 7-11 賣貨便自填單
                 <FaExternalLinkAlt />
               </NavItem>
-              <NavItem href="https://ua-cards.com/page/notice" target="_blank" rel="noopener noreferrer">
+              <NavItem to="/report"rel="noopener noreferrer">
+                客服回報單
+              </NavItem>
+              <NavItem to="/notice" rel="noopener noreferrer">
                 購買須知
-                <FaExternalLinkAlt />
-              </NavItem>
-              <NavItem href="https://ua-cards.com/page/report" target="_blank" rel="noopener noreferrer">
-                回報單
-                <FaExternalLinkAlt />
-              </NavItem>
-              <NavItem href="https://lin.ee/eRuNaiC" target="_blank" rel="noopener noreferrer">
-                LINE 官方帳號 (@520nhcdh)
-                <FaExternalLinkAlt />
               </NavItem>
             </NavSection>
           </NavPopup>
