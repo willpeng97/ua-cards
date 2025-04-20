@@ -1,8 +1,31 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useState, useEffect } from 'react';
-import { FaSearch, FaTimes, FaShoppingCart, FaTrash, FaExternalLinkAlt, FaChevronDown } from 'react-icons/fa';
+import { FaShoppingCart, FaTrash, FaExternalLinkAlt, FaChevronDown } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import logo from '../assets/LOGO.png';
 import { useCart } from '../context/CartContext';
+
+const navLinkStyles = css`
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  font-size: 1rem;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  &:hover {
+    color: #FF6B00;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
+`;
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -16,10 +39,8 @@ const NavbarContainer = styled.nav`
   }
 `;
 
-const Logo = styled.div`
+const Logo = styled(Link)`
   height: 48px;
-  display: flex;
-  align-items: center;
 
   img {
     height: 100%;
@@ -40,79 +61,15 @@ const NavLinks = styled.div`
   }
 `;
 
-const SearchContainer = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
+const NavLink = styled(Link)`
+  ${navLinkStyles}
 `;
 
-const SearchInput = styled.input`
-  padding: 0.5rem 2.5rem 0.5rem 2rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  width: 240px;
-  background-color: white;
-  color: #333;
-  transition: all 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: #FF6B00;
-    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    max-width: 200px;
-  }
-`;
-
-const SearchIcon = styled(FaSearch)`
-  position: absolute;
-  left: 0.5rem;
-  color: #666;
-  pointer-events: none;
-`;
-
-const ClearButton = styled.button`
-  position: absolute;
-  right: 0.5rem;
+const NavButton = styled.button`
+  ${navLinkStyles}
   background: none;
   border: none;
-  color: #666;
-  cursor: pointer;
   padding: 0;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    color: #333;
-  }
-`;
-
-const NavLink = styled.a`
-  color: #333;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease;
-  white-space: nowrap;
-  font-size: 1rem;
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-
-  &:hover {
-    color: #FF6B00;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-  }
 `;
 
 const NavPopup = styled.div<{ isOpen: boolean }>`
@@ -159,21 +116,10 @@ const NavItem = styled.a`
 `;
 
 const CartButton = styled.button`
+  ${navLinkStyles}
   background: none;
   border: none;
-  color: #333;
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-  transition: color 0.3s ease;
-  font-size: 1rem;
-
-  &:hover {
-    color: #FF6B00;
-  }
+  padding: 0;
 `;
 
 const CartBadge = styled.span`
@@ -360,11 +306,10 @@ const EmptyCart = styled.div`
 `;
 
 interface NavbarProps {
-  onSearch: (keyword: string) => void;
+  onSearch?: (keyword: string) => void;
 }
 
 const Navbar = ({ onSearch }: NavbarProps) => {
-  const [searchValue, setSearchValue] = useState('');
   const [activePopup, setActivePopup] = useState<string | null>(null);
   const { cartItems, totalAmount, updateQuantity, removeFromCart } = useCart();
 
@@ -388,19 +333,6 @@ const Navbar = ({ onSearch }: NavbarProps) => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    // 延遲300ms後再進行搜尋，避免每次輸入都立即搜尋
-    const timer = setTimeout(() => {
-      onSearch(searchValue);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchValue]);
-
-  const handleClear = () => {
-    setSearchValue('');
-  };
-
   const handleQuantityChange = (code: string, newQuantity: number) => (e: React.MouseEvent) => {
     e.stopPropagation(); // 阻止事件冒泡
     updateQuantity(code, newQuantity);
@@ -408,25 +340,12 @@ const Navbar = ({ onSearch }: NavbarProps) => {
 
   return (
     <NavbarContainer>
-      <Logo>
+      <Logo to="/">
         <img src={logo} alt="Logo" />
       </Logo>
       <NavLinks>
-        <SearchContainer>
-          <SearchIcon />
-          <SearchInput 
-            type="text" 
-            placeholder="搜尋卡牌..." 
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-          {searchValue && (
-            <ClearButton onClick={handleClear}>
-              <FaTimes />
-            </ClearButton>
-          )}
-        </SearchContainer>
-        <NavLink 
+        <NavLink to="/">首頁</NavLink>
+        <NavButton 
           className="nav-popup-trigger"
           onClick={() => togglePopup('guide')}
         >
@@ -456,8 +375,8 @@ const Navbar = ({ onSearch }: NavbarProps) => {
               </NavItem>
             </NavSection>
           </NavPopup>
-        </NavLink>
-        <NavLink 
+        </NavButton>
+        <NavButton 
           className="nav-popup-trigger"
           onClick={() => togglePopup('contact')}
         >
@@ -483,7 +402,7 @@ const Navbar = ({ onSearch }: NavbarProps) => {
               </NavItem>
             </NavSection>
           </NavPopup>
-        </NavLink>
+        </NavButton>
         <CartButton className="nav-popup-trigger" onClick={() => togglePopup('cart')}>
           <FaShoppingCart />
           購物車
