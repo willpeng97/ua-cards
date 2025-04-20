@@ -9,6 +9,7 @@ const NavbarContainer = styled.nav`
   align-items: center;
   padding: 1rem 2rem;
   background: linear-gradient(to bottom, #FFB485, #F1F1F1);
+  
   @media (max-width: 768px) {
     padding: 1rem;
     flex-direction: column;

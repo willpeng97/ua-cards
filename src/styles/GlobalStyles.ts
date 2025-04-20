@@ -1,91 +1,62 @@
 import { createGlobalStyle } from 'styled-components';
 
-const GlobalStyles = createGlobalStyle`
-  :root {
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+export const GlobalStyles = createGlobalStyle`
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  body {
     line-height: 1.5;
-    font-weight: 400;
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
+  :root {
+    /* 主色調 */
+    --primary-color: #FF914D;
+    --primary-light: #FFB07D;
+    --primary-dark: #E67A3D;
+    
+    /* 輔助色 */
+    --secondary-color: #4D8BFF;
+    --secondary-light: #7DABFF;
+    --secondary-dark: #3D6BE6;
+    
+    /* 中性色 */
+    --neutral-100: #FFFFFF;
+    --neutral-200: #F5F5F5;
+    --neutral-300: #E5E5E5;
+    --neutral-400: #D4D4D4;
+    --neutral-500: #A3A3A3;
+    --neutral-600: #737373;
+    --neutral-700: #525252;
+    --neutral-800: #404040;
+    --neutral-900: #262626;
+    
+    /* 功能色 */
+    --success-color: #4ADE80;
+    --warning-color: #FACC15;
+    --error-color: #F87171;
+    --info-color: #60A5FA;
+    
+    /* 字體大小 */
+    --font-size-small: 0.875rem;
+    --font-size-normal: 1rem;
+    --font-size-large: 1.25rem;
+    --font-size-xlarge: 1.5rem;
+    
+    /* 間距 */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
   }
-  a:hover {
-    color: #535bf2;
-  }
-
-  body {
-    margin: 0;
-    display: flex;
-    place-items: center;
-    min-width: 320px;
-    min-height: 100vh;
-  }
-
-  h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
-  }
-
-  button {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: #1a1a1a;
-    cursor: pointer;
-    transition: border-color 0.25s;
-  }
-  button:hover {
-    border-color: #646cff;
-  }
-  button:focus,
-  button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
-  }
-
-  @keyframes logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    a:nth-of-type(2) .logo {
-      animation: logo-spin infinite 20s linear;
-    }
-  }
-
-  .read-the-docs {
-    color: #888;
-  }
-
-  @media (prefers-color-scheme: light) {
-    :root {
-      color: #213547;
-      background-color: #ffffff;
-    }
-    a:hover {
-      color: #747bff;
-    }
-    button {
-      background-color: #f9f9f9;
-    }
-  }
-`;
-
-export default GlobalStyles; 
+`; 
