@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import SideMenu from './components/SideMenu';
 import ProductList from './components/ProductList';
 import { useState, useCallback } from 'react';
-import productsData from './data/products.json';
+import productsData from './mockData/products.json';
 import { CartProvider } from './context/CartContext';
 
 interface Product {
