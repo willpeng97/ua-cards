@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaSearch, FaTimes } from 'react-icons/fa';
 import logo from '../assets/LOGO.png';
 
@@ -52,7 +52,7 @@ const SearchInput = styled.input`
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  width: 200px;
+  width: 240px;
   background-color: white;
   color: #333;
   transition: all 0.3s ease;
@@ -110,8 +110,21 @@ const NavLink = styled.a`
   }
 `;
 
-const Navbar = () => {
+interface NavbarProps {
+  onSearch: (keyword: string) => void;
+}
+
+const Navbar = ({ onSearch }: NavbarProps) => {
   const [searchValue, setSearchValue] = useState('');
+
+  useEffect(() => {
+    // 延遲300ms後再進行搜尋，避免每次輸入都立即搜尋
+    const timer = setTimeout(() => {
+      onSearch(searchValue);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchValue]);
 
   const handleClear = () => {
     setSearchValue('');
