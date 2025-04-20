@@ -173,7 +173,6 @@ const CartItem = styled.div`
 
 const CartItemImage = styled.img`
   width: 50px;
-  height: 50px;
   object-fit: cover;
 `;
 
@@ -189,6 +188,12 @@ const CartItemTitle = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   color: #333;
+`;
+
+const CartItemCode = styled.div`
+  color: var(--neutral-600);
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
 `;
 
 const CartItemPrice = styled.div`
@@ -445,6 +450,7 @@ const Navbar = () => {
                     <CartItemImage src={item.image} alt={item.title} />
                     <CartItemInfo>
                       <CartItemTitle>{item.title}</CartItemTitle>
+                      <CartItemCode>{item.code}</CartItemCode>
                       <CartItemPrice>
                         ${item.price}
                       </CartItemPrice>
