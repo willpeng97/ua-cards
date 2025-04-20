@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { MdClose } from "react-icons/md";
 import { useState, useEffect } from 'react';
-import { useCart } from '../context/CartContext';
 import Toast from './Toast';
+import { getCartItems, addToCart } from '../utils/cartStorage';
+import type { CartItem } from '../utils/cartStorage';
 
 const CardContainer = styled.div`
   background: white;
@@ -233,7 +234,23 @@ const ProductCard = ({ image, title, code, price, stock, category }: ProductCard
   const [quantity, setQuantity] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const { cartItems, addToCart } = useCart();
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const updateCartData = () => {
+      setCartItems(getCartItems());
+    };
+
+    // 初始載入購物車數據
+    updateCartData();
+
+    // 添加事件監聽器
+    window.addEventListener('cartUpdated', updateCartData);
+
+    return () => {
+      window.removeEventListener('cartUpdated', updateCartData);
+    };
+  }, []);
 
   // 檢查購物車中該商品的數量
   const cartItem = cartItems.find(item => item.code === code);
@@ -279,11 +296,13 @@ const ProductCard = ({ image, title, code, price, stock, category }: ProductCard
       code,
       price,
       stock,
-      category
-    }, quantity);
+      category,
+      quantity
+    });
 
     setQuantity(0);
     setShowToast(true);
+    setCartItems(getCartItems());
   };
 
   return (

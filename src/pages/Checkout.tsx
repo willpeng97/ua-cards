@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { useCart } from '../context/CartContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import type { CartItem } from '../utils/cartStorage';
+import { getCartItems, getTotalAmount } from '../utils/cartStorage';
 
 const CheckoutContainer = styled.div`
   max-width: 1200px;
@@ -130,7 +131,8 @@ const SubmitButton = styled.button`
 `;
 
 const CheckoutPage = () => {
-  const { cartItems, totalAmount } = useCart();
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [totalAmount, setTotalAmount] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -138,6 +140,12 @@ const CheckoutPage = () => {
     address: '',
     note: ''
   });
+
+  useEffect(() => {
+    const items = getCartItems();
+    setCartItems(items);
+    setTotalAmount(getTotalAmount(items));
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -155,20 +163,26 @@ const CheckoutPage = () => {
 
   return (
     <CheckoutContainer>
+      <SummarySection>
+        <Title>訂單摘要</Title>
+        {cartItems.map(item => (
+          <CartItem key={item.code}>
+            <CartItemImage src={item.image} alt={item.title} />
+            <CartItemInfo>
+              <CartItemTitle>{item.title}</CartItemTitle>
+              <CartItemPrice>${item.price}</CartItemPrice>
+              <CartItemQuantity>數量: {item.quantity}</CartItemQuantity>
+            </CartItemInfo>
+          </CartItem>
+        ))}
+        <Total>
+          <span>總金額</span>
+          <span>${totalAmount}</span>
+        </Total>
+      </SummarySection>
       <FormSection>
         <Title>結帳資訊</Title>
         <Form onSubmit={handleSubmit}>
-          <FormGroup>
-            <Label htmlFor="name">姓名</Label>
-            <Input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </FormGroup>
           <FormGroup>
             <Label htmlFor="phone">電話</Label>
             <Input
@@ -191,48 +205,9 @@ const CheckoutPage = () => {
               required
             />
           </FormGroup>
-          <FormGroup>
-            <Label htmlFor="address">地址</Label>
-            <Input
-              type="text"
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              required
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label htmlFor="note">備註</Label>
-            <Input
-              type="text"
-              id="note"
-              name="note"
-              value={formData.note}
-              onChange={handleChange}
-            />
-          </FormGroup>
           <SubmitButton type="submit">確認結帳</SubmitButton>
         </Form>
       </FormSection>
-
-      <SummarySection>
-        <Title>訂單摘要</Title>
-        {cartItems.map(item => (
-          <CartItem key={item.code}>
-            <CartItemImage src={item.image} alt={item.title} />
-            <CartItemInfo>
-              <CartItemTitle>{item.title}</CartItemTitle>
-              <CartItemPrice>${item.price}</CartItemPrice>
-              <CartItemQuantity>數量: {item.quantity}</CartItemQuantity>
-            </CartItemInfo>
-          </CartItem>
-        ))}
-        <Total>
-          <span>總金額</span>
-          <span>${totalAmount}</span>
-        </Total>
-      </SummarySection>
     </CheckoutContainer>
   );
 };

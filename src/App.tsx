@@ -6,7 +6,6 @@ import HomePage from './pages/HomePage';
 import ReportPage from './pages/ReportPage';
 import NoticePage from './pages/NoticePage';
 import CheckoutPage from './pages/Checkout';
-import { CartProvider } from './context/CartContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const AppContainer = styled.div`
@@ -28,20 +27,18 @@ function App() {
   return (
     <BrowserRouter>
       <GlobalStyles />
-      <CartProvider>
-        <AppContainer>
-          <Navbar />
-          <MainContent>
-            <Routes>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/report' element={<ReportPage />} />
-              <Route path='/notice' element={<NoticePage />} />
-              <Route path='/checkout' element={<CheckoutPage />} />
-            </Routes>
-          </MainContent>
-          <Footer />
-        </AppContainer>
-      </CartProvider>
+      <AppContainer>
+        <Navbar />
+        <MainContent>
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/report' element={<ReportPage />} />
+            <Route path='/notice' element={<NoticePage />} />
+            <Route path='/checkout' element={<CheckoutPage />} />
+          </Routes>
+        </MainContent>
+        <Footer />
+      </AppContainer>
     </BrowserRouter>
   );
 }

@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import { FaShoppingCart, FaTrash, FaExternalLinkAlt, FaChevronDown } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import logo from '../assets/LOGO.png';
-import { useCart } from '../context/CartContext';
+import type { CartItem } from '../utils/cartStorage';
+import { getCartItems, updateQuantity, removeFromCart, getTotalAmount } from '../utils/cartStorage';
 
 const navLinkStyles = css`
   color: #333;
@@ -307,15 +308,33 @@ const EmptyCart = styled.div`
   color: #666;
 `;
 
-interface NavbarProps {
-  onSearch?: (keyword: string) => void;
-}
-
-const Navbar = ({ onSearch }: NavbarProps) => {
+const Navbar = () => {
   const [activePopup, setActivePopup] = useState<string | null>(null);
-  const { cartItems, totalAmount, updateQuantity, removeFromCart } = useCart();
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  const updateCartData = () => {
+    const items = getCartItems();
+    setCartItems(items);
+    setTotalAmount(getTotalAmount(items));
+  };
+
+  useEffect(() => {
+    // 初始載入購物車數據
+    updateCartData();
+
+    // 添加事件監聽器
+    window.addEventListener('cartUpdated', updateCartData);
+
+    return () => {
+      window.removeEventListener('cartUpdated', updateCartData);
+    };
+  }, []);
 
   const togglePopup = (popupName: string) => {
+    if (popupName === 'cart') {
+      updateCartData();
+    }
     setActivePopup(activePopup === popupName ? null : popupName);
   };
 
@@ -336,8 +355,17 @@ const Navbar = ({ onSearch }: NavbarProps) => {
   }, []);
 
   const handleQuantityChange = (code: string, newQuantity: number) => (e: React.MouseEvent) => {
-    e.stopPropagation(); // 阻止事件冒泡
-    updateQuantity(code, newQuantity);
+    e.stopPropagation();
+    const updatedItems = updateQuantity(code, newQuantity);
+    setCartItems(updatedItems);
+    setTotalAmount(getTotalAmount(updatedItems));
+  };
+
+  const handleRemoveItem = (code: string) => (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const updatedItems = removeFromCart(code);
+    setCartItems(updatedItems);
+    setTotalAmount(getTotalAmount(updatedItems));
   };
 
   return (
@@ -436,10 +464,7 @@ const Navbar = ({ onSearch }: NavbarProps) => {
                             +
                           </QuantityButton>
                         </QuantityControl>
-                        <RemoveButton onClick={(e) => {
-                          e.stopPropagation();
-                          removeFromCart(item.code);
-                        }}>
+                        <RemoveButton onClick={handleRemoveItem(item.code)}>
                           <FaTrash />
                         </RemoveButton>
                       </CartItemActions>
