@@ -5,6 +5,7 @@ import SideMenu from './components/SideMenu';
 import ProductList from './components/ProductList';
 import { useState, useCallback } from 'react';
 import productsData from './data/products.json';
+import { CartProvider } from './context/CartContext';
 
 interface Product {
   image: string;
@@ -71,16 +72,18 @@ function App() {
   return (
     <>
       <GlobalStyles />
-      <AppContainer>
-        <Navbar onSearch={handleSearch} />
-        <MainContent>
-          <SideMenu 
-            onSelect={handleAnimeSelect} 
-            selectedItem={selectedAnime}
-          />
-          <ProductList products={products} title={selectedAnime} />
-        </MainContent>
-      </AppContainer>
+      <CartProvider>
+        <AppContainer>
+          <Navbar onSearch={handleSearch} />
+          <MainContent>
+            <SideMenu 
+              onSelect={handleAnimeSelect} 
+              selectedItem={selectedAnime}
+            />
+            <ProductList products={products} title={selectedAnime} />
+          </MainContent>
+        </AppContainer>
+      </CartProvider>
     </>
   );
 }

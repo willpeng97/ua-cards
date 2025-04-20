@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { MdClose } from "react-icons/md";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useCart } from '../context/CartContext';
+import Toast from './Toast';
 
 const CardContainer = styled.div`
   background: white;
@@ -92,7 +94,7 @@ const ActionContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  height: 36px;
 `;
 
 const QuantityControl = styled.div`
@@ -102,6 +104,7 @@ const QuantityControl = styled.div`
   border: 1px solid #ddd;
   border-radius: 4px;
   overflow: hidden;
+  height: 100%;
 `;
 
 const QuantityButton = styled.button`
@@ -143,7 +146,7 @@ const QuantityDisplay = styled.span`
 `;
 
 const AddToCartButton = styled.button`
-  padding: 0.5rem;
+  padding: 0 1rem;
   background: var(--primary-color);
   color: white;
   border: none;
@@ -152,6 +155,7 @@ const AddToCartButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
   transition: all 0.3s ease;
 
   &:hover {
@@ -222,11 +226,27 @@ interface ProductCardProps {
   code: string;
   price: number;
   stock: number;
+  category: string;
 }
 
-const ProductCard = ({ image, title, code, price, stock }: ProductCardProps) => {
+const ProductCard = ({ image, title, code, price, stock, category }: ProductCardProps) => {
   const [quantity, setQuantity] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const { cartItems, addToCart } = useCart();
+
+  // 檢查購物車中該商品的數量
+  const cartItem = cartItems.find(item => item.code === code);
+  const remainingStock = stock - (cartItem?.quantity || 0);
+
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
 
   const handleDecrease = () => {
     if (quantity > 1) {
@@ -235,7 +255,7 @@ const ProductCard = ({ image, title, code, price, stock }: ProductCardProps) => 
   };
 
   const handleIncrease = () => {
-    if (quantity < stock) {
+    if (quantity < remainingStock) {
       setQuantity(quantity + 1);
     }
   };
@@ -246,6 +266,24 @@ const ProductCard = ({ image, title, code, price, stock }: ProductCardProps) => 
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleAddToCart = () => {
+    if (quantity > remainingStock) {
+      return;
+    }
+
+    addToCart({
+      image,
+      title,
+      code,
+      price,
+      stock,
+      category
+    }, quantity);
+
+    setQuantity(0);
+    setShowToast(true);
   };
 
   return (
@@ -260,7 +298,7 @@ const ProductCard = ({ image, title, code, price, stock }: ProductCardProps) => 
           <ProductTitle>{title}</ProductTitle>
           <ProductCode>{code}</ProductCode>
           <ProductPrice>NT$ {price}</ProductPrice>
-          <StockInfo>庫存: {stock}</StockInfo>
+          <StockInfo>庫存: {remainingStock}</StockInfo>
           <ActionContainer>
             <QuantityControl>
               <QuantityButton 
@@ -272,12 +310,15 @@ const ProductCard = ({ image, title, code, price, stock }: ProductCardProps) => 
               <QuantityDisplay>{quantity}</QuantityDisplay>
               <QuantityButton 
                 onClick={handleIncrease}
-                disabled={quantity >= stock}
+                disabled={quantity >= remainingStock}
               >
                 +
               </QuantityButton>
             </QuantityControl>
-            <AddToCartButton disabled={stock === 0}>
+            <AddToCartButton 
+              onClick={handleAddToCart}
+              disabled={remainingStock === 0}
+            >
               <MdOutlineAddShoppingCart />
             </AddToCartButton>
           </ActionContainer>
@@ -292,6 +333,12 @@ const ProductCard = ({ image, title, code, price, stock }: ProductCardProps) => 
           <ModalImage src={image} alt={title} />
         </ModalContent>
       </ImageModal>
+
+      <Toast 
+        message="成功加入到購物車" 
+        isVisible={showToast}
+        onHide={() => setShowToast(false)}
+      />
     </>
   );
 };

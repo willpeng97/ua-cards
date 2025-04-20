@@ -41,7 +41,7 @@ export const GlobalStyles = createGlobalStyle`
     --neutral-900: #262626;
     
     /* 功能色 */
-    --success-color: #4ADE80;
+    --success-color: #4CAF50;
     --warning-color: #FACC15;
     --error-color: #F87171;
     --info-color: #60A5FA;
