@@ -208,7 +208,7 @@ const Navbar = ({ onSearch }: NavbarProps) => {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [searchValue, onSearch]);
+  }, [searchValue]);
 
   const handleClear = () => {
     setSearchValue('');

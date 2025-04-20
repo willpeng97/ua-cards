@@ -269,7 +269,7 @@ const ProductCard = ({ image, title, code, price, stock, category }: ProductCard
   };
 
   const handleAddToCart = () => {
-    if (quantity > remainingStock) {
+    if (quantity > remainingStock || quantity === 0) {
       return;
     }
 
