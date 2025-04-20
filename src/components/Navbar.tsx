@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { FaSearch, FaTimes, FaShoppingCart, FaTrash } from 'react-icons/fa';
+import { FaSearch, FaTimes, FaShoppingCart, FaTrash, FaExternalLinkAlt, FaChevronDown } from 'react-icons/fa';
 import logo from '../assets/LOGO.png';
 import { useCart } from '../context/CartContext';
 
@@ -10,6 +10,10 @@ const NavbarContainer = styled.nav`
   align-items: center;
   padding: 1rem 2rem;
   background: linear-gradient(to bottom, #FFB485, #F1F1F1);
+  * {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
   
   @media (max-width: 768px) {
     padding: 1rem;
@@ -102,6 +106,11 @@ const NavLink = styled.a`
   transition: color 0.3s ease;
   white-space: nowrap;
   font-size: 1rem;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 
   &:hover {
     color: #FF6B00;
@@ -109,6 +118,49 @@ const NavLink = styled.a`
 
   @media (max-width: 768px) {
     font-size: 0.9rem;
+  }
+`;
+
+const NavPopup = styled.div<{ isOpen: boolean }>`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 240px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  z-index: 1000;
+  display: ${props => props.isOpen ? 'block' : 'none'};
+  text-align: left;
+  margin-top: 0.5rem;
+`;
+
+const NavSection = styled.div`
+  margin-top: 1rem;
+
+  &:first-child {
+    margin-top: 0;
+  }
+`;
+
+const NavItem = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  color: #0066cc;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #FF6B00;
+    text-decoration: underline;
+  }
+
+  svg {
+    font-size: 0.8rem;
   }
 `;
 
@@ -146,7 +198,7 @@ const CartBadge = styled.span`
   font-weight: 600;
 `;
 
-const CartPopup = styled.div`
+const CartPopup = styled.div<{ isOpen: boolean }>`
   position: absolute;
   top: 100%;
   right: 0;
@@ -156,12 +208,9 @@ const CartPopup = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   z-index: 1000;
-  display: none;
+  display: ${props => props.isOpen ? 'block' : 'none'};
   text-align: left;
-
-  ${CartButton}:hover & {
-    display: block;
-  }
+  margin-top: 0.5rem;
 `;
 
 const CartItem = styled.div`
@@ -171,9 +220,14 @@ const CartItem = styled.div`
   gap: 1rem;
   padding: 0.5rem 0;
   border-bottom: 1px solid #eee;
+  color: #333;
 
   &:last-child {
     border-bottom: none;
+  }
+
+  &:hover {
+    color: #333;
   }
 `;
 
@@ -194,6 +248,7 @@ const CartItemTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #333;
 `;
 
 const CartItemPrice = styled.div`
@@ -232,6 +287,7 @@ const QuantityButton = styled.button`
 
   &:hover {
     background: #e0e0e0;
+    color: #333;
   }
 
   &:disabled {
@@ -274,6 +330,11 @@ const CartTotal = styled.div`
   font-weight: 600;
   display: flex;
   justify-content: space-between;
+  color: #333;
+
+  &:hover {
+    color: #333;
+  }
 `;
 
 const CheckoutButton = styled.button`
@@ -310,7 +371,28 @@ interface NavbarProps {
 
 const Navbar = ({ onSearch }: NavbarProps) => {
   const [searchValue, setSearchValue] = useState('');
+  const [activePopup, setActivePopup] = useState<string | null>(null);
   const { cartItems, totalAmount, updateQuantity, removeFromCart } = useCart();
+
+  const togglePopup = (popupName: string) => {
+    setActivePopup(activePopup === popupName ? null : popupName);
+  };
+
+  const closeAllPopups = () => {
+    setActivePopup(null);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.nav-popup-trigger')) {
+        closeAllPopups();
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     // 延遲300ms後再進行搜尋，避免每次輸入都立即搜尋
@@ -323,6 +405,11 @@ const Navbar = ({ onSearch }: NavbarProps) => {
 
   const handleClear = () => {
     setSearchValue('');
+  };
+
+  const handleQuantityChange = (code: string, newQuantity: number) => (e: React.MouseEvent) => {
+    e.stopPropagation(); // 阻止事件冒泡
+    updateQuantity(code, newQuantity);
   };
 
   return (
@@ -345,15 +432,71 @@ const Navbar = ({ onSearch }: NavbarProps) => {
             </ClearButton>
           )}
         </SearchContainer>
-        <NavLink href="#">攻略</NavLink>
-        <NavLink href="#">聯絡我們</NavLink>
-        <CartButton>
+        <NavLink 
+          className="nav-popup-trigger"
+          onClick={() => togglePopup('guide')}
+        >
+          攻略
+          <FaChevronDown size={12} />
+          <NavPopup isOpen={activePopup === 'guide'}>
+            <NavSection>
+              <NavItem href="https://rugiacreation.com/ua/search" target="_blank" rel="noopener noreferrer">
+                路基亞 UA 中文卡表
+                <FaExternalLinkAlt />
+              </NavItem>
+              <NavItem href="https://torecards.com/unionarenatier/#google_vignette" target="_blank" rel="noopener noreferrer">
+                Tier List
+                <FaExternalLinkAlt />
+              </NavItem>
+              <NavItem href="https://www.unionarena-tcg.com/tc/" target="_blank" rel="noopener noreferrer">
+                Union Arena 官網
+                <FaExternalLinkAlt />
+              </NavItem>
+              <NavItem href="https://www.unionarena-tcg.com/tc/rules/limited.php" target="_blank" rel="noopener noreferrer">
+                Union Arena 禁/限卡表
+                <FaExternalLinkAlt />
+              </NavItem>
+              <NavItem href="https://yuyu-tei.jp/" target="_blank" rel="noopener noreferrer">
+                yuyu-tei 遊遊亭 / yuyu亭
+                <FaExternalLinkAlt />
+              </NavItem>
+            </NavSection>
+          </NavPopup>
+        </NavLink>
+        <NavLink 
+          className="nav-popup-trigger"
+          onClick={() => togglePopup('contact')}
+        >
+          聯絡我們
+          <FaChevronDown size={12} />
+          <NavPopup isOpen={activePopup === 'contact'}>
+            <NavSection>
+              <NavItem href="https://myship.7-11.com.tw/cart/easy/GM2410225591590" target="_blank" rel="noopener noreferrer">
+                7-11 賣貨便自填單
+                <FaExternalLinkAlt />
+              </NavItem>
+              <NavItem href="https://ua-cards.com/page/notice" target="_blank" rel="noopener noreferrer">
+                購買須知
+                <FaExternalLinkAlt />
+              </NavItem>
+              <NavItem href="https://ua-cards.com/page/report" target="_blank" rel="noopener noreferrer">
+                回報單
+                <FaExternalLinkAlt />
+              </NavItem>
+              <NavItem href="https://lin.ee/eRuNaiC" target="_blank" rel="noopener noreferrer">
+                LINE 官方帳號 (@520nhcdh)
+                <FaExternalLinkAlt />
+              </NavItem>
+            </NavSection>
+          </NavPopup>
+        </NavLink>
+        <CartButton className="nav-popup-trigger" onClick={() => togglePopup('cart')}>
           <FaShoppingCart />
           購物車
           {cartItems.length > 0 && (
             <CartBadge>{cartItems.length}</CartBadge>
           )}
-          <CartPopup>
+          <CartPopup isOpen={activePopup === 'cart'}>
             {cartItems.length > 0 ? (
               <>
                 {cartItems.map(item => (
@@ -362,25 +505,28 @@ const Navbar = ({ onSearch }: NavbarProps) => {
                     <CartItemInfo>
                       <CartItemTitle>{item.title}</CartItemTitle>
                       <CartItemPrice>
-                        ${item.price} x {item.quantity}
+                        ${item.price}
                       </CartItemPrice>
                       <CartItemActions>
                         <QuantityControl>
                           <QuantityButton 
-                            onClick={() => updateQuantity(item.code, item.quantity - 1)}
+                            onClick={handleQuantityChange(item.code, item.quantity - 1)}
                             disabled={item.quantity <= 1}
                           >
                             -
                           </QuantityButton>
                           <QuantityDisplay>{item.quantity}</QuantityDisplay>
                           <QuantityButton 
-                            onClick={() => updateQuantity(item.code, item.quantity + 1)}
+                            onClick={handleQuantityChange(item.code, item.quantity + 1)}
                             disabled={item.quantity >= item.stock}
                           >
                             +
                           </QuantityButton>
                         </QuantityControl>
-                        <RemoveButton onClick={() => removeFromCart(item.code)}>
+                        <RemoveButton onClick={(e) => {
+                          e.stopPropagation();
+                          removeFromCart(item.code);
+                        }}>
                           <FaTrash />
                         </RemoveButton>
                       </CartItemActions>
