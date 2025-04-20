@@ -32,6 +32,8 @@ const MenuItem = styled.li<{ isActive?: boolean }>`
   background-color: ${props => props.isActive ? 'var(--neutral-200)' : 'transparent'};
   border-radius: 4px;
   font-weight: ${props => props.isActive ? '600' : '400'};
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 
   &:hover {
     color: var(--primary-color);

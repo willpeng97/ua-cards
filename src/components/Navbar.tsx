@@ -14,12 +14,6 @@ const NavbarContainer = styled.nav`
     -webkit-tap-highlight-color: transparent;
     user-select: none;
   }
-  
-  @media (max-width: 768px) {
-    padding: 1rem;
-    flex-direction: column;
-    gap: 1rem;
-  }
 `;
 
 const Logo = styled.div`
