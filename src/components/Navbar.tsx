@@ -127,7 +127,7 @@ const Navbar = () => {
           <SearchIcon />
           <SearchInput 
             type="text" 
-            placeholder="搜尋商品..." 
+            placeholder="搜尋卡牌..." 
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />

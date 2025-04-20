@@ -51,7 +51,7 @@ const SideMenu = ({ onSelect }: SideMenuProps) => {
 
   return (
     <SideMenuContainer>
-      <MenuTitle>動漫作品</MenuTitle>
+      <MenuTitle>卡牌分類</MenuTitle>
       <MenuList>
         {animeList.map((item) => (
           <MenuItem 

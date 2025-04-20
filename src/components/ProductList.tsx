@@ -5,8 +5,9 @@ const ProductListContainer = styled.div`
   flex: 1;
   display: grid;
   background-color: var(--neutral-100);
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: var(--spacing-md);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
 `;
 
 interface Product {

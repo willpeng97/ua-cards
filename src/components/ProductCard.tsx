@@ -1,11 +1,13 @@
 import styled from 'styled-components';
+import { FaShoppingCart } from 'react-icons/fa';
+import { useState } from 'react';
 
 const CardContainer = styled.div`
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 1rem;
-  width: 160px;
+  width: 200px;
   transition: transform 0.3s ease;
 
   &:hover {
@@ -80,25 +82,31 @@ const StockInfo = styled.div`
   }
 `;
 
+const ActionContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+`;
+
 const QuantityControl = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-
-  @media (max-width: 768px) {
-    margin-bottom: 0.75rem;
-  }
+  width: 100px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
 `;
 
 const QuantityButton = styled.button`
-  background: #f0f0f0;
+  background: #f5f5f5;
   border: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 4px;
+  height: 36px;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  color: var(--neutral-700);
+  transition: background-color 0.2s ease;
+  width: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,44 +115,45 @@ const QuantityButton = styled.button`
     background: #e0e0e0;
   }
 
-  @media (max-width: 768px) {
-    width: 25px;
-    height: 25px;
-    font-size: 1rem;
+  &:active {
+    background: #d0d0d0;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 `;
 
-const QuantityInput = styled.input`
-  width: 50px;
+const QuantityDisplay = styled.span`
+  padding: 0.5rem;
+  width: 36px;
   text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 0.25rem;
-
-  @media (max-width: 768px) {
-    width: 40px;
-    padding: 0.2rem;
-  }
+  background: white;
+  color: var(--neutral-800);
+  font-size: 0.9rem;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 `;
 
 const AddToCartButton = styled.button`
-  width: 100%;
-  padding: 0.75rem;
-  background: #FF6B00;
+  padding: 0.5rem;
+  background: var(--primary-color);
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background: #e55c00;
+    background: var(--primary-dark);
   }
 
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-    font-size: 0.9rem;
+  svg {
+    font-size: 1.2rem;
   }
 `;
 
@@ -157,6 +166,20 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ image, title, code, price, stock }: ProductCardProps) => {
+  const [quantity, setQuantity] = useState(0);
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const handleIncrease = () => {
+    if (quantity < stock) {
+      setQuantity(quantity + 1);
+    }
+  };
+
   return (
     <CardContainer>
       <ProductImage src={image} alt={title} />
@@ -165,12 +188,26 @@ const ProductCard = ({ image, title, code, price, stock }: ProductCardProps) => 
         <ProductCode>{code}</ProductCode>
         <ProductPrice>NT$ {price}</ProductPrice>
         <StockInfo>庫存: {stock}</StockInfo>
-        <QuantityControl>
-          <QuantityButton>-</QuantityButton>
-          <QuantityInput type="number" min="1" max={stock} defaultValue="1" />
-          <QuantityButton>+</QuantityButton>
-        </QuantityControl>
-        <AddToCartButton>加入購物車</AddToCartButton>
+        <ActionContainer>
+          <QuantityControl>
+            <QuantityButton 
+              onClick={handleDecrease}
+              disabled={quantity <= 1}
+            >
+              -
+            </QuantityButton>
+            <QuantityDisplay>{quantity}</QuantityDisplay>
+            <QuantityButton 
+              onClick={handleIncrease}
+              disabled={quantity >= stock}
+            >
+              +
+            </QuantityButton>
+          </QuantityControl>
+          <AddToCartButton>
+            <FaShoppingCart />
+          </AddToCartButton>
+        </ActionContainer>
       </ProductInfo>
     </CardContainer>
   );
