@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { GlobalStyles } from './styles/GlobalStyles';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import ReportPage from './pages/ReportPage';
 import NoticePage from './pages/NoticePage';
@@ -12,6 +13,14 @@ const AppContainer = styled.div`
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+const MainContent = styled.main`
+  flex: 1;
+  padding-bottom: 2rem;
 `;
 
 function App() {
@@ -21,11 +30,14 @@ function App() {
       <CartProvider>
         <AppContainer>
           <Navbar />
-          <Routes>
-            <Route path='/' element={<HomePage />} />
-            <Route path='/report' element={<ReportPage />} />
-            <Route path='/notice' element={<NoticePage />} />
-          </Routes>
+          <MainContent>
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/report' element={<ReportPage />} />
+              <Route path='/notice' element={<NoticePage />} />
+            </Routes>
+          </MainContent>
+          <Footer />
         </AppContainer>
       </CartProvider>
     </BrowserRouter>
