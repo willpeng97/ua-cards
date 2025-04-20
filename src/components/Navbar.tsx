@@ -276,7 +276,7 @@ const CartTotal = styled.div`
   }
 `;
 
-const CheckoutButton = styled.button`
+const CheckoutButton = styled(Link)`
   width: 100%;
   padding: 0.75rem;
   background: var(--primary-color);
@@ -287,6 +287,9 @@ const CheckoutButton = styled.button`
   cursor: pointer;
   margin-top: 1rem;
   transition: background-color 0.3s ease;
+  text-decoration: none;
+  text-align: center;
+  display: block;
 
   &:hover {
     background: var(--primary-dark);
@@ -447,7 +450,7 @@ const Navbar = ({ onSearch }: NavbarProps) => {
                   <span>總金額</span>
                   <span>${totalAmount}</span>
                 </CartTotal>
-                <CheckoutButton>
+                <CheckoutButton to="/checkout">
                   前往結帳
                 </CheckoutButton>
               </>
