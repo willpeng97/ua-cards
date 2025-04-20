@@ -415,7 +415,7 @@ const Navbar = () => {
           className="nav-popup-trigger"
           onClick={() => togglePopup('contact')}
         >
-          幫助中心
+          聯絡我們
           <FaChevronDown size={12} />
           <NavPopup isOpen={activePopup === 'contact'}>
             <NavSection>
