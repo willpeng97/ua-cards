@@ -44,7 +44,7 @@ function App() {
         product.title.toLowerCase().includes(lowerQuery) ||
         product.code.toLowerCase().includes(lowerQuery)
       );
-      setSelectedAnime("搜尋結果");
+      setSelectedAnime(`"${query}" 的搜尋結果`);
     } 
     else if (category && category !== '全部商品' && category !== '搜尋結果') {
       filtered = filtered.filter(product => product.category === category);

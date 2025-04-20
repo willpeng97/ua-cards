@@ -249,7 +249,7 @@ const ProductCard = ({ image, title, code, price, stock, category }: ProductCard
   }, [showToast]);
 
   const handleDecrease = () => {
-    if (quantity > 1) {
+    if (quantity > 0) {
       setQuantity(quantity - 1);
     }
   };
@@ -303,7 +303,7 @@ const ProductCard = ({ image, title, code, price, stock, category }: ProductCard
             <QuantityControl>
               <QuantityButton 
                 onClick={handleDecrease}
-                disabled={quantity <= 1}
+                disabled={quantity < 1}
               >
                 -
               </QuantityButton>
