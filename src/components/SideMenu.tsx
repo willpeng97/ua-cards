@@ -25,28 +25,31 @@ const MenuList = styled.ul`
   margin: 0;
 `;
 
-const MenuItem = styled.li`
-  padding: var(--spacing-sm) 0;
+const MenuItem = styled.li<{ isActive?: boolean }>`
+  padding: var(--spacing-sm) var(--spacing-md);
   cursor: pointer;
-  color: var(--neutral-700);
-  transition: color 0.3s ease;
+  color: ${props => props.isActive ? 'var(--primary-color)' : 'var(--neutral-700)'};
+  background-color: ${props => props.isActive ? 'var(--neutral-200)' : 'transparent'};
+  border-radius: 4px;
+  font-weight: ${props => props.isActive ? '600' : '400'};
 
   &:hover {
     color: var(--primary-color);
+    background-color: var(--neutral-200);
   }
 `;
 
 interface SideMenuProps {
   onSelect?: (item: string) => void;
+  selectedItem?: string;
 }
 
-const SideMenu = ({ onSelect }: SideMenuProps) => {
+const SideMenu = ({ onSelect, selectedItem }: SideMenuProps) => {
   const animeList = [
-    '鬼滅之刃',
+    '全部商品',
     '咒術迴戰',
     '進擊的巨人',
-    '間諜家家酒',
-    '我推的孩子'
+    '我的英雄學院'
   ];
 
   return (
@@ -57,6 +60,7 @@ const SideMenu = ({ onSelect }: SideMenuProps) => {
           <MenuItem 
             key={item}
             onClick={() => onSelect?.(item)}
+            isActive={item === selectedItem}
           >
             {item}
           </MenuItem>

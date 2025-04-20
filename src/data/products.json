@@ -124,5 +124,77 @@
     "price": 40,
     "stock": 0,
     "category": "進擊的巨人"
+  },
+  {
+    "id": 15,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA10BT_MHA-1-004.png?v5",
+    "title": "ALL FOR ONE",
+    "code": "UA10BT/MHA-1-004",
+    "price": 28,
+    "stock": 0,
+    "category": "我的英雄學院"
+  },
+  {
+    "id": 16,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA10BT_MHA-1-010.png?v5",
+    "title": "死柄木弔",
+    "code": "UA10BT/MHA-1-010",
+    "price": 77,
+    "stock": 0,
+    "category": "我的英雄學院"
+  },
+  {
+    "id": 17,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA10BT_MHA-1-020.png?v5",
+    "title": "死柄木弔",
+    "code": "UA10BT/MHA-1-020",
+    "price": 151,
+    "stock": 0,
+    "category": "我的英雄學院"
+  },
+  {
+    "id": 18,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA10BT_MHA-1-042.png?v5",
+    "title": "麗日 御茶子",
+    "code": "UA10BT/MHA-1-042",
+    "price": 49,
+    "stock": 5,
+    "category": "我的英雄學院"
+  },
+  {
+    "id": 19,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA02BT_JJK-1-005.png?v5",
+    "title": "狗巻 棘",
+    "code": "UA02BT/JJK-1-005",
+    "price": 40,
+    "stock": 9,
+    "category": "咒術迴戰"
+  },
+  {
+    "id": 20,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA02BT_JJK-1-008.png?v5",
+    "title": "釘崎 野薔薇",
+    "code": "UA02BT/JJK-1-008",
+    "price": 58,
+    "stock": 1,
+    "category": "咒術迴戰"
+  },
+  {
+    "id": 21,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA02BT_JJK-1-012.png?v5",
+    "title": "五條 悟",
+    "code": "UA02BT/JJK-1-012",
+    "price": 142,
+    "stock": 0,
+    "category": "咒術迴戰"
+  },
+  {
+    "id": 22,
+    "image": "https://www.unionarena-tcg.com/jp/images/cardlist/card/UA02BT_JJK-1-022.png?v5",
+    "title": "伏黑 惠",
+    "code": "UA02BT/JJK-1-013",
+    "price":58,
+    "stock": 3,
+    "category": "咒術迴戰"
   }
-] 
+]

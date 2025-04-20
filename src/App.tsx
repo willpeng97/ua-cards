@@ -4,7 +4,16 @@ import Navbar from './components/Navbar';
 import SideMenu from './components/SideMenu';
 import ProductList from './components/ProductList';
 import { useState } from 'react';
-import products from './data/products.json';
+import productsData from './data/products.json';
+
+interface Product {
+  image: string;
+  title: string;
+  code: string;
+  price: number;
+  stock: number;
+  category: string;
+}
 
 const AppContainer = styled.div`
   background-color: var(--neutral-200);
@@ -23,10 +32,20 @@ const MainContent = styled.div`
 
 function App() {
   const [selectedAnime, setSelectedAnime] = useState<string>('');
+  const [products, setProducts] = useState<Product[]>(productsData);
 
   const handleAnimeSelect = (anime: string) => {
     setSelectedAnime(anime);
-    // 這裡可以添加過濾商品的邏輯
+    if (anime === '全部商品') {
+      // 如果選擇"全部"，顯示所有商品
+      setProducts(productsData);
+    } else {
+      // 過濾特定類別的商品
+      const filteredProducts = productsData.filter(
+        (product: Product) => product.category === anime
+      );
+      setProducts(filteredProducts);
+    }
   };
 
   return (
@@ -35,8 +54,11 @@ function App() {
       <AppContainer>
         <Navbar />
         <MainContent>
-          <SideMenu onSelect={handleAnimeSelect} />
-          <ProductList products={products} />
+          <SideMenu 
+            onSelect={handleAnimeSelect} 
+            selectedItem={selectedAnime}
+          />
+          <ProductList products={products} title={selectedAnime} />
         </MainContent>
       </AppContainer>
     </>

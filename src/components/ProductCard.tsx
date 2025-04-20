@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { FaShoppingCart } from 'react-icons/fa';
+import { MdOutlineAddShoppingCart } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import { useState } from 'react';
 
 const CardContainer = styled.div`
@@ -22,7 +23,12 @@ const CardContainer = styled.div`
 const ProductImage = styled.img`
   width: 100%;
   object-fit: cover;
-  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
 
   @media (max-width: 768px) {
     height: 180px;
@@ -130,7 +136,7 @@ const QuantityDisplay = styled.span`
   width: 36px;
   text-align: center;
   background: white;
-  color: var(--neutral-800);
+  color: var(--primary-dark);
   font-size: 0.9rem;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
@@ -146,14 +152,67 @@ const AddToCartButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 
   &:hover {
     background: var(--primary-dark);
   }
 
+  &:disabled {
+    background: var(--neutral-400);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
   svg {
     font-size: 1.2rem;
+  }
+`;
+
+const ImageModal = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: ${props => props.isOpen ? 'flex' : 'none'};
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 2rem;
+`;
+
+const ModalContent = styled.div`
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+`;
+
+const ModalImage = styled.img`
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 8px;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
   }
 `;
 
@@ -167,6 +226,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ image, title, code, price, stock }: ProductCardProps) => {
   const [quantity, setQuantity] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDecrease = () => {
     if (quantity > 1) {
@@ -180,36 +240,59 @@ const ProductCard = ({ image, title, code, price, stock }: ProductCardProps) => 
     }
   };
 
+  const handleImageClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <CardContainer>
-      <ProductImage src={image} alt={title} />
-      <ProductInfo>
-        <ProductTitle>{title}</ProductTitle>
-        <ProductCode>{code}</ProductCode>
-        <ProductPrice>NT$ {price}</ProductPrice>
-        <StockInfo>庫存: {stock}</StockInfo>
-        <ActionContainer>
-          <QuantityControl>
-            <QuantityButton 
-              onClick={handleDecrease}
-              disabled={quantity <= 1}
-            >
-              -
-            </QuantityButton>
-            <QuantityDisplay>{quantity}</QuantityDisplay>
-            <QuantityButton 
-              onClick={handleIncrease}
-              disabled={quantity >= stock}
-            >
-              +
-            </QuantityButton>
-          </QuantityControl>
-          <AddToCartButton>
-            <FaShoppingCart />
-          </AddToCartButton>
-        </ActionContainer>
-      </ProductInfo>
-    </CardContainer>
+    <>
+      <CardContainer>
+        <ProductImage 
+          src={image} 
+          alt={title} 
+          onClick={handleImageClick}
+        />
+        <ProductInfo>
+          <ProductTitle>{title}</ProductTitle>
+          <ProductCode>{code}</ProductCode>
+          <ProductPrice>NT$ {price}</ProductPrice>
+          <StockInfo>庫存: {stock}</StockInfo>
+          <ActionContainer>
+            <QuantityControl>
+              <QuantityButton 
+                onClick={handleDecrease}
+                disabled={quantity <= 1}
+              >
+                -
+              </QuantityButton>
+              <QuantityDisplay>{quantity}</QuantityDisplay>
+              <QuantityButton 
+                onClick={handleIncrease}
+                disabled={quantity >= stock}
+              >
+                +
+              </QuantityButton>
+            </QuantityControl>
+            <AddToCartButton disabled={stock === 0}>
+              <MdOutlineAddShoppingCart />
+            </AddToCartButton>
+          </ActionContainer>
+        </ProductInfo>
+      </CardContainer>
+
+      <ImageModal isOpen={isModalOpen} onClick={handleCloseModal}>
+        <ModalContent onClick={e => e.stopPropagation()}>
+          <CloseButton onClick={handleCloseModal}>
+            <MdClose />
+          </CloseButton>
+          <ModalImage src={image} alt={title} />
+        </ModalContent>
+      </ImageModal>
+    </>
   );
 };
 
