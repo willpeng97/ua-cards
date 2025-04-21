@@ -22,26 +22,30 @@ const navLinkStyles = css`
   &:hover {
     color: #FF6B00;
   }
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-  }
 `;
 
 const NavbarContainer = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
   background: linear-gradient(to bottom, #FFB485, #F1F1F1);
   * {
     -webkit-tap-highlight-color: transparent;
     user-select: none;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+  }
 `;
 
 const Logo = styled(Link)`
   height: 48px;
+
+  @media (max-width: 768px) {
+    height: 40px;
+  }
 
   img {
     height: 100%;
@@ -54,12 +58,6 @@ const NavLinks = styled.div`
   display: flex;
   gap: 2rem;
   align-items: center;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    justify-content: space-around;
-    gap: 1rem;
-  }
 `;
 
 const NavLink = styled(Link)`
@@ -161,6 +159,10 @@ const CartItem = styled.div`
   padding: 0.5rem 0;
   border-bottom: 1px solid #eee;
   color: #333;
+
+  @media (max-width: 768px) {
+    gap: 0.75rem;
+  }
 
   &:last-child {
     border-bottom: none;

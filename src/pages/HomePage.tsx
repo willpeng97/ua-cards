@@ -18,6 +18,10 @@ const MainContent = styled.div`
   padding: var(--spacing-md);
   gap: var(--spacing-md);
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const HomePage = () => {

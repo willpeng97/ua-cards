@@ -11,6 +11,10 @@ const SideMenuContainer = styled.div`
   height: fit-content;
   position: sticky;
   top: var(--spacing-md);
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const MenuTitle = styled.h2`
@@ -76,6 +80,11 @@ const MenuList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 `;
 
 const MenuItem = styled.li<{ isActive?: boolean }>`
