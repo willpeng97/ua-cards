@@ -151,7 +151,7 @@ Please change the parent <Route path="${Y}"> to <Route path="${Y==="/"?"*":`${Y}
   height: 48px;
 
   @media (max-width: 768px) {
-    height: 40px;
+    height: 32px;
   }
 
   img {
@@ -178,7 +178,7 @@ Please change the parent <Route path="${Y}"> to <Route path="${Y==="/"?"*":`${Y}
   position: absolute;
   top: 100%;
   right: 0;
-  width: 240px;
+  width: fit-content;
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -187,6 +187,10 @@ Please change the parent <Route path="${Y}"> to <Route path="${Y==="/"?"*":`${Y}
   display: ${a=>a.isOpen?"block":"none"};
   text-align: left;
   margin-top: 0.5rem;
+  @media (max-width: 768px) {
+    right: -40px;
+    z-index: 999;
+  }
 `,lg=q.div`
   margin-top: 1rem;
 
@@ -532,7 +536,7 @@ Please change the parent <Route path="${Y}"> to <Route path="${Y==="/"?"*":`${Y}
 
   @media (max-width: 768px) {
     padding: 0.5rem;
-    width: 180px;
+    width: 150px;
   }
 `,xx=q.img`
   width: 100%;
@@ -709,6 +713,10 @@ Please change the parent <Route path="${Y}"> to <Route path="${Y==="/"?"*":`${Y}
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
 `,Nx=q.h2`
   color: var(--neutral-800);
   font-size: var(--font-size-large);
