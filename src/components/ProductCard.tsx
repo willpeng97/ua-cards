@@ -93,6 +93,7 @@ const ActionContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 36px;
+  gap: 0.5rem;
 `;
 
 const QuantityControl = styled.div`
@@ -168,6 +169,10 @@ const AddToCartButton = styled.button`
 
   svg {
     font-size: 1.2rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 0.75rem;
   }
 `;
 

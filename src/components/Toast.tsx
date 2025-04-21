@@ -28,6 +28,7 @@ const ToastContainer = styled.div<{ isVisible: boolean }>`
   position: fixed;
   top: 20px;
   left: 50%;
+  transform: translateX(-50%);
   background-color: var(--success-color);
   color: white;
   padding: 0.75rem 1.5rem;
@@ -41,6 +42,14 @@ const ToastContainer = styled.div<{ isVisible: boolean }>`
   gap: 0.75rem;
   animation: ${props => props.isVisible ? slideIn : slideOut} 0.3s ease-in-out;
   animation-fill-mode: forwards;
+  min-width: 200px;
+  max-width: 90%;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+    min-width: 180px;
+  }
 `;
 
 const Icon = styled(FaCheckCircle)`
