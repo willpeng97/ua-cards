@@ -19,7 +19,8 @@ const CardContainer = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 0.75rem;
+    padding: 0.5rem;
+    width: 180px;
   }
 `;
 
@@ -31,10 +32,6 @@ const ProductImage = styled.img`
 
   &:hover {
     opacity: 0.9;
-  }
-
-  @media (max-width: 768px) {
-    height: 180px;
   }
 `;
 
@@ -174,8 +171,7 @@ const AddToCartButton = styled.button`
   }
 `;
 
-const ImageModal = styled.div<{ isOpen: boolean }>`
-  position: fixed;
+const ImageModal = styled.div<{ isOpen: boolean }>`  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
