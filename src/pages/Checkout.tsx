@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import type { CartItem } from '../utils/cartStorage';
-import { getCartItems, getTotalAmount, updateQuantity, removeFromCart } from '../utils/cartStorage';
+import { getCartItems, getTotalAmount, updateQuantity, removeFromCart, clearCart } from '../utils/cartStorage';
 import processImg from '../assets/purchase_process.png';
+import Swal from 'sweetalert2';
 
 const CheckoutContainer = styled.div`
   max-width: 1200px;
@@ -281,8 +282,25 @@ const CheckoutPage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: 實現結帳邏輯
-    console.log('Checkout submitted:', formData);
+    
+    Swal.fire({
+      title: '訂單已送出!!',
+      text: `謝謝您的購買! 請記得至7-11賣貨便自填單填入電話及總金額: $${totalAmount}`,
+      icon: 'success',
+      showCancelButton: true,
+      confirmButtonText: '前往填單',
+      cancelButtonText: '返回',
+      reverseButtons: true,
+      confirmButtonColor: 'var(--info-color)',
+      cancelButtonColor: '#6c757d'
+    }).then((result) => {
+      clearCart();
+      if (result.isConfirmed) {
+        window.location.href = 'https://myship.7-11.com.tw/cart/easy/GM2410225591590';
+      } else {
+        window.location.href = '/';
+      }
+    });
   };
 
   return (

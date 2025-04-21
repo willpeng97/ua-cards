@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 import ReportPage from './pages/ReportPage';
 import NoticePage from './pages/NoticePage';
 import CheckoutPage from './pages/Checkout';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 
 const AppContainer = styled.div`
   background-color: #F1F1F1;
@@ -25,7 +25,7 @@ const MainContent = styled.main`
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <GlobalStyles />
       <AppContainer>
         <Navbar />
@@ -39,7 +39,7 @@ function App() {
         </MainContent>
         <Footer />
       </AppContainer>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
