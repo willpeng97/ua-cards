@@ -44,7 +44,7 @@ const Logo = styled(Link)`
   height: 48px;
 
   @media (max-width: 768px) {
-    height: 40px;
+    height: 32px;
   }
 
   img {
@@ -79,7 +79,7 @@ const NavPopup = styled.div<{ isOpen: boolean }>`
   position: absolute;
   top: 100%;
   right: 0;
-  width: 240px;
+  width: fit-content;
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -88,6 +88,10 @@ const NavPopup = styled.div<{ isOpen: boolean }>`
   display: ${props => props.isOpen ? 'block' : 'none'};
   text-align: left;
   margin-top: 0.5rem;
+  @media (max-width: 768px) {
+    right: -40px;
+    z-index: 999;
+  }
 `;
 
 const NavSection = styled.div`
