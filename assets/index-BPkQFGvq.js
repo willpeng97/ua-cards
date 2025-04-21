@@ -163,6 +163,10 @@ Please change the parent <Route path="${Y}"> to <Route path="${Y==="/"?"*":`${Y}
   display: flex;
   gap: 2rem;
   align-items: center;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `,Hb=q(Ll)`
   ${yf}
 `,ng=q.button`
@@ -527,7 +531,8 @@ Please change the parent <Route path="${Y}"> to <Route path="${Y==="/"?"*":`${Y}
   }
 
   @media (max-width: 768px) {
-    padding: 0.75rem;
+    padding: 0.5rem;
+    width: 180px;
   }
 `,xx=q.img`
   width: 100%;
@@ -537,10 +542,6 @@ Please change the parent <Route path="${Y}"> to <Route path="${Y==="/"?"*":`${Y}
 
   &:hover {
     opacity: 0.9;
-  }
-
-  @media (max-width: 768px) {
-    height: 180px;
   }
 `,Sx=q.div`
   margin-top: 1rem;
@@ -658,8 +659,7 @@ Please change the parent <Route path="${Y}"> to <Route path="${Y==="/"?"*":`${Y}
   svg {
     font-size: 1.2rem;
   }
-`,Dx=q.div`
-  position: fixed;
+`,Dx=q.div`  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
