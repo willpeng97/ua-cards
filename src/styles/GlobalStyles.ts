@@ -25,9 +25,9 @@ export const GlobalStyles = createGlobalStyle`
     --primary-dark: #E67A3D;
     
     /* 輔助色 */
-    --secondary-color: #4D8BFF;
-    --secondary-light: #7DABFF;
-    --secondary-dark: #3D6BE6;
+    --secondary-color: #2DA8A4;
+    --secondary-light: #4DC8C4;
+    --secondary-dark: #1E8884;
     
     /* 中性色 */
     --neutral-100: #FFFFFF;

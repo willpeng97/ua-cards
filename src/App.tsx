@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import ReportPage from './pages/ReportPage';
 import NoticePage from './pages/NoticePage';
 import CheckoutPage from './pages/Checkout';
+import ScrollToTop from './components/ScrollToTop';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 
 const AppContainer = styled.div`
@@ -38,6 +39,7 @@ function App() {
           </Routes>
         </MainContent>
         <Footer />
+        <ScrollToTop />
       </AppContainer>
     </HashRouter>
   );
