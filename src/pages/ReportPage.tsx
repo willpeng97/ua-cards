@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState } from "react";
-import CardPriceQuery from "../components/CardPriceQuery";
 
 const ReportContainer = styled.div`
 	max-width: 800px;
@@ -154,7 +153,6 @@ const ReportPage = () => {
 				</FormGroup>
 				<SubmitButton type="submit">提交</SubmitButton>
 			</Form>
-			<CardPriceQuery />
 		</ReportContainer>
 	);
 };
