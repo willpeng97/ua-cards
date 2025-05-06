@@ -130,6 +130,10 @@ const ProductList = ({
 				return a.title.localeCompare(b.title);
 			case "nameDesc":
 				return b.title.localeCompare(a.title);
+			case "stockAsc":
+				return a.stock - b.stock;
+			case "stockDesc":
+				return b.stock - a.stock;
 			default:
 				return 0;
 		}
@@ -157,6 +161,12 @@ const ProductList = ({
 						</SortOption>
 						<SortOption onClick={() => handleSort("nameDesc")}>
 							名稱 Z-A
+						</SortOption>
+						<SortOption onClick={() => handleSort("stockAsc")}>
+							庫存由低到高
+						</SortOption>
+						<SortOption onClick={() => handleSort("stockDesc")}>
+							庫存由高到低
 						</SortOption>
 					</SortOptions>
 				</SortContainer>
