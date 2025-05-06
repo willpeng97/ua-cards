@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import ProductCard from "./ProductCard";
+import LoadingSpinner from "./LoadingSpinner";
 
 const ProductListContainer = styled.div`
 	flex: 1;
@@ -103,9 +104,14 @@ interface Product {
 interface ProductListProps {
 	products: Product[];
 	title: string;
+	isLoading?: boolean;
 }
 
-const ProductList = ({ products, title }: ProductListProps) => {
+const ProductList = ({
+	products,
+	title,
+	isLoading = false,
+}: ProductListProps) => {
 	const [isSortOpen, setIsSortOpen] = useState(false);
 	const [sortBy, setSortBy] = useState("default");
 
@@ -155,11 +161,15 @@ const ProductList = ({ products, title }: ProductListProps) => {
 					</SortOptions>
 				</SortContainer>
 			</CategoryTitle>
-			<ProductGrid>
-				{sortedProducts.map((product) => (
-					<ProductCard key={product.code} {...product} />
-				))}
-			</ProductGrid>
+			{isLoading ? (
+				<LoadingSpinner />
+			) : (
+				<ProductGrid>
+					{sortedProducts.map((product) => (
+						<ProductCard key={product.code} {...product} />
+					))}
+				</ProductGrid>
+			)}
 		</ProductListContainer>
 	);
 };

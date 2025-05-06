@@ -31,19 +31,27 @@ const HomePage = () => {
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [allProducts, setAllProducts] = useState<Product[]>([]);
 	const [categories, setCategories] = useState<string[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
-			const fetchedProducts = await cardApi.getCards();
-			setAllProducts(fetchedProducts);
-			setProducts(fetchedProducts);
-			setSelectedAnime("全部商品");
+			try {
+				setIsLoading(true);
+				const fetchedProducts = await cardApi.getCards();
+				setAllProducts(fetchedProducts);
+				setProducts(fetchedProducts);
+				setSelectedAnime("全部商品");
 
-			// 獲取唯一的類別列表
-			const uniqueCategories = Array.from(
-				new Set(fetchedProducts.map((product) => product.category))
-			);
-			setCategories(uniqueCategories);
+				// 獲取唯一的類別列表
+				const uniqueCategories = Array.from(
+					new Set(fetchedProducts.map((product) => product.category))
+				);
+				setCategories(uniqueCategories);
+			} catch (error) {
+				console.error("獲取產品資料失敗:", error);
+			} finally {
+				setIsLoading(false);
+			}
 		};
 		fetchProducts();
 	}, []);
@@ -97,7 +105,12 @@ const HomePage = () => {
 				onSearch={handleSearch}
 				categoryList={categories}
 			/>
-			<ProductList products={products} title={selectedAnime} />
+
+			<ProductList
+				products={products}
+				title={selectedAnime}
+				isLoading={isLoading}
+			/>
 		</MainContent>
 	);
 };
