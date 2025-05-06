@@ -3,12 +3,17 @@ interface CardPriceResponse {
 	error?: string;
 }
 
+interface Card {
+	id: number;
+	image: string;
+	title: string;
+	code: string;
+	price: number;
+	stock: number;
+	category: string;
+}
+
 export const cardApi = {
-	/**
-	 * 獲取卡片價格
-	 * @param cardNumber 卡片編號
-	 * @returns Promise<CardPriceResponse>
-	 */
 	getCardPrice: async (cardNumber: string): Promise<CardPriceResponse> => {
 		try {
 			const encodedCardNumber = encodeURIComponent(cardNumber);
@@ -34,6 +39,26 @@ export const cardApi = {
 		} catch (error) {
 			console.error("獲取卡片價格失敗:", error);
 			return { price: 0, error: "獲取價格失敗" };
+		}
+	},
+
+	getCards: async (): Promise<Card[]> => {
+		try {
+			const url = `https://ua-cards.com/test.php`;
+			const response = await fetch(url, {
+				method: "GET",
+				headers: {
+					Accept: "application/json",
+				},
+			});
+
+			const data = await response.json();
+			console.log("API Response:", data);
+
+			return data;
+		} catch (error) {
+			console.error("獲取卡片失敗:", error);
+			return [];
 		}
 	},
 };
