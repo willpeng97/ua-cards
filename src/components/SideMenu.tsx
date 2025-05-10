@@ -5,7 +5,6 @@ import { useState } from "react";
 const SideMenuContainer = styled.div`
 	width: 240px;
 	background-color: var(--neutral-100);
-	border-radius: 8px;
 	padding: var(--spacing-md);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	height: fit-content;

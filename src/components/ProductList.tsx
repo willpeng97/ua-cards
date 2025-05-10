@@ -11,7 +11,6 @@ const ProductListContainer = styled.div`
 	gap: 16px;
 	background-color: var(--neutral-100);
 	padding: 16px;
-	border-radius: 8px;
 `;
 
 const ProductGrid = styled.div`

@@ -29,7 +29,6 @@ const ImageContainer = styled.div`
 	width: 100%;
 	padding-top: 140%; // 保持圖片比例
 	background-color: var(--neutral-100);
-	border-radius: 4px;
 	overflow: hidden;
 `;
 
