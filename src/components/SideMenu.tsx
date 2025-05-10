@@ -93,14 +93,16 @@ const MenuItem = styled.li<{ isActive?: boolean }>`
 		props.isActive ? "var(--primary-color)" : "var(--neutral-700)"};
 	background-color: ${(props) =>
 		props.isActive ? "var(--neutral-200)" : "transparent"};
-	border-radius: 4px;
 	font-weight: ${(props) => (props.isActive ? "600" : "400")};
 	-webkit-tap-highlight-color: transparent;
 	user-select: none;
+	border-left: ${(props) =>
+		props.isActive ? "4px solid var(--primary-color)" : "none"};
 
 	&:hover {
 		color: var(--primary-color);
 		background-color: var(--neutral-200);
+		border-left: 4px solid var(--primary-color);
 	}
 `;
 
