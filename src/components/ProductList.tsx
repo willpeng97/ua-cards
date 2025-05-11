@@ -91,6 +91,13 @@ const SortOption = styled.button`
 	}
 `;
 
+const EmptyState = styled.div`
+	text-align: center;
+	padding: 3rem;
+	color: var(--neutral-500);
+	font-size: var(--font-size-large);
+`;
+
 interface Product {
 	image: string;
 	title: string;
@@ -172,6 +179,8 @@ const ProductList = ({
 			</CategoryTitle>
 			{isLoading ? (
 				<LoadingSpinner />
+			) : sortedProducts.length === 0 ? (
+				<EmptyState>找不到符合條件的商品</EmptyState>
 			) : (
 				<ProductGrid>
 					{sortedProducts.map((product) => (

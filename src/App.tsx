@@ -22,6 +22,8 @@ const AppContainer = styled.div`
 const MainContent = styled.main`
 	flex: 1;
 	padding-bottom: 2rem;
+	max-width: 1400px;
+	margin: 0 auto;
 `;
 
 function App() {
