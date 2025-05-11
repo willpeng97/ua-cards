@@ -98,6 +98,32 @@ const EmptyState = styled.div`
 	font-size: var(--font-size-large);
 `;
 
+const LoadMoreButton = styled.button`
+	border: 1px solid var(--neutral-400);
+	color: var(--neutral-600);
+	background-color: var(--neutral-100);
+	padding: 0.5rem 10rem;
+	border-radius: 4px;
+	font-size: var(--font-size-medium);
+	cursor: pointer;
+	transition: all 0.2s ease;
+	margin: 1rem auto;
+	display: block;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+	&:hover {
+		background-color: var(--neutral-200);
+		border-color: var(--neutral-800);
+	}
+
+	&:disabled {
+		background-color: var(--neutral-400);
+		border-color: var(--neutral-500);
+		color: var(--neutral-600);
+		cursor: not-allowed;
+	}
+`;
+
 interface Product {
 	image: string;
 	title: string;
@@ -113,6 +139,9 @@ interface ProductListProps {
 	isLoading?: boolean;
 }
 
+const INITIAL_ITEMS = 20;
+const LOAD_MORE_ITEMS = 20;
+
 const ProductList = ({
 	products,
 	title,
@@ -120,10 +149,12 @@ const ProductList = ({
 }: ProductListProps) => {
 	const [isSortOpen, setIsSortOpen] = useState(false);
 	const [sortBy, setSortBy] = useState("default");
+	const [displayCount, setDisplayCount] = useState(INITIAL_ITEMS);
 
 	const handleSort = (type: string) => {
 		setSortBy(type);
 		setIsSortOpen(false);
+		setDisplayCount(INITIAL_ITEMS); // 重置顯示數量
 	};
 
 	const sortedProducts = [...products].sort((a, b) => {
@@ -144,6 +175,13 @@ const ProductList = ({
 				return 0;
 		}
 	});
+
+	const handleLoadMore = () => {
+		setDisplayCount((prev) => prev + LOAD_MORE_ITEMS);
+	};
+
+	const displayedProducts = sortedProducts.slice(0, displayCount);
+	const hasMoreProducts = displayCount < sortedProducts.length;
 
 	return (
 		<ProductListContainer>
@@ -182,11 +220,18 @@ const ProductList = ({
 			) : sortedProducts.length === 0 ? (
 				<EmptyState>找不到符合條件的商品</EmptyState>
 			) : (
-				<ProductGrid>
-					{sortedProducts.map((product) => (
-						<ProductCard key={product.code} {...product} />
-					))}
-				</ProductGrid>
+				<>
+					<ProductGrid>
+						{displayedProducts.map((product) => (
+							<ProductCard key={product.code} {...product} />
+						))}
+					</ProductGrid>
+					{hasMoreProducts && (
+						<LoadMoreButton onClick={handleLoadMore}>
+							顯示更多商品
+						</LoadMoreButton>
+					)}
+				</>
 			)}
 		</ProductListContainer>
 	);

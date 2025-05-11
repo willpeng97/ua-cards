@@ -21,6 +21,7 @@ const MainContent = styled.div`
 	padding: var(--spacing-md);
 	gap: var(--spacing-md);
 	margin: 0 auto;
+	width: 100%;
 
 	@media (max-width: 768px) {
 		flex-direction: column;
