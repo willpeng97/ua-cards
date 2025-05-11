@@ -107,7 +107,7 @@ const ProductCode = styled.div`
 const ProductPrice = styled.div`
 	font-size: 1.2rem;
 	font-weight: bold;
-	color: #ff6b00;
+	color: rgb(255, 55, 0);
 	margin: 0.5rem 0;
 
 	@media (max-width: 768px) {

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import SideMenu from "../components/SideMenu";
 import ProductList from "../components/ProductList";
+import HomeCarousel from "../components/HomeCarousel";
 import { useState, useCallback, useEffect } from "react";
 import { cardApi } from "../api/cardApi";
 
@@ -14,6 +15,7 @@ interface Product {
 	category: string;
 }
 
+// 原有的 MainContent 樣式
 const MainContent = styled.div`
 	display: flex;
 	padding: var(--spacing-md);
@@ -98,20 +100,24 @@ const HomePage = () => {
 	};
 
 	return (
-		<MainContent>
-			<SideMenu
-				onSelect={handleAnimeSelect}
-				selectedItem={selectedAnime}
-				onSearch={handleSearch}
-				categoryList={categories}
-			/>
+		<>
+			<HomeCarousel />
 
-			<ProductList
-				products={products}
-				title={selectedAnime}
-				isLoading={isLoading}
-			/>
-		</MainContent>
+			<MainContent>
+				<SideMenu
+					onSelect={handleAnimeSelect}
+					selectedItem={selectedAnime}
+					onSearch={handleSearch}
+					categoryList={categories}
+				/>
+
+				<ProductList
+					products={products}
+					title={selectedAnime}
+					isLoading={isLoading}
+				/>
+			</MainContent>
+		</>
 	);
 };
 
