@@ -2,12 +2,16 @@ import styled from "styled-components";
 import { useState } from "react";
 
 const ReportContainer = styled.div`
-	max-width: 800px;
+	width: 800px;
 	margin: 1rem auto;
 	padding: 2rem;
 	background: white;
 	border-radius: 8px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+	@media (max-width: 768px) {
+		width: 100vw;
+	}
 `;
 
 const Title = styled.h1`

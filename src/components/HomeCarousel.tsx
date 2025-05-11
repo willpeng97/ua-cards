@@ -97,7 +97,13 @@ const HomeCarousel = () => {
 
 	return (
 		<CarouselContainer>
-			<Carousel autoplay arrows dots={true} dotPosition="bottom">
+			<Carousel
+				autoplay
+				arrows
+				dots={true}
+				dotPosition="bottom"
+				autoplaySpeed={5000}
+			>
 				{carouselItems.map((item) => (
 					<div key={item.id}>
 						<CarouselItem onClick={() => handleCarouselClick(item.link)}>

@@ -19,14 +19,12 @@ const SideMenuContainer = styled.div`
 const MenuTitle = styled.h2`
 	color: var(--neutral-800);
 	font-size: var(--font-size-large);
-	margin-bottom: var(--spacing-md);
 	padding-bottom: var(--spacing-sm);
-	border-bottom: 2px solid var(--primary-color);
 `;
 
 const SearchContainer = styled.div`
 	position: relative;
-	margin-bottom: var(--spacing-md);
+	margin-bottom: var(--spacing-sm);
 `;
 
 const SearchInput = styled.input`
@@ -132,7 +130,13 @@ const SideMenu = ({
 		onSearch?.("");
 	};
 
-	const menuItems = ["全部商品", ...categoryList];
+	const handleSelect = (item: string) => {
+		setSearchValue("");
+		onSearch?.("");
+		onSelect?.(item);
+	};
+
+	const menuItems = ["全部作品", ...categoryList];
 
 	return (
 		<SideMenuContainer>
@@ -155,7 +159,7 @@ const SideMenu = ({
 				{menuItems.map((item) => (
 					<MenuItem
 						key={item}
-						onClick={() => onSelect?.(item)}
+						onClick={() => handleSelect(item)}
 						isActive={item === selectedItem}
 					>
 						{item}

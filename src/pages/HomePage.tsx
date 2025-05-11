@@ -43,7 +43,7 @@ const HomePage = () => {
 				const fetchedProducts = await cardApi.getCards();
 				setAllProducts(fetchedProducts);
 				setProducts(fetchedProducts);
-				setSelectedAnime("全部商品");
+				setSelectedAnime("全部作品");
 
 				// 獲取唯一的類別列表
 				const uniqueCategories = Array.from(
@@ -73,12 +73,12 @@ const HomePage = () => {
 				setSelectedAnime(`"${query}" 的搜尋結果`);
 			} else if (
 				category &&
-				category !== "全部商品" &&
+				category !== "全部作品" &&
 				category !== "搜尋結果"
 			) {
 				filtered = filtered.filter((product) => product.category === category);
 			} else {
-				setSelectedAnime("全部商品");
+				setSelectedAnime("全部作品");
 			}
 
 			return filtered;
@@ -94,8 +94,8 @@ const HomePage = () => {
 
 	const handleSearch = (query: string) => {
 		setSearchQuery(query);
-		// 如果清空搜尋，使用 "全部商品" 作為分類
-		const category = query ? selectedAnime : "全部商品";
+		// 如果清空搜尋，使用 "全部作品" 作為分類
+		const category = query ? selectedAnime : "全部作品";
 		const filteredProducts = filterProducts(category, query);
 		setProducts(filteredProducts);
 	};

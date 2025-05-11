@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import ProductCard from "./ProductCard";
 import LoadingSpinner from "./LoadingSpinner";
@@ -151,10 +151,15 @@ const ProductList = ({
 	const [sortBy, setSortBy] = useState("default");
 	const [displayCount, setDisplayCount] = useState(INITIAL_ITEMS);
 
+	// 當分類改變時重置顯示數量
+	useEffect(() => {
+		setDisplayCount(INITIAL_ITEMS);
+	}, [title]);
+
 	const handleSort = (type: string) => {
 		setSortBy(type);
 		setIsSortOpen(false);
-		setDisplayCount(INITIAL_ITEMS); // 重置顯示數量
+		setDisplayCount(INITIAL_ITEMS);
 	};
 
 	const sortedProducts = [...products].sort((a, b) => {
@@ -228,7 +233,7 @@ const ProductList = ({
 					</ProductGrid>
 					{hasMoreProducts && (
 						<LoadMoreButton onClick={handleLoadMore}>
-							顯示更多商品
+							顯示更多卡牌
 						</LoadMoreButton>
 					)}
 				</>
