@@ -5,5 +5,6 @@ import react from "@vitejs/plugin-react";
 export default defineConfig(({ command }) => ({
 	plugins: [react()],
 	// base: command === 'serve' ? '/' : '/ua-cards/',
-	base: command === "serve" ? "/" : "/",
+	base: command === "serve" ? "/" : "/shop/",
+	// base: command === "serve" ? "/" : "/",
 }));
