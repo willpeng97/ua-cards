@@ -96,7 +96,6 @@ const ProductCode = styled.div`
 	font-size: 0.9rem;
 	color: #666;
 	margin: 0.5rem 0;
-	border-radius: 4px;
 	display: inline-block;
 
 	@media (max-width: 768px) {
@@ -239,7 +238,6 @@ const ModalImage = styled.img`
 	max-width: 100%;
 	max-height: 80vh;
 	object-fit: contain;
-	border-radius: 8px;
 `;
 
 const CloseButton = styled.button`
