@@ -231,6 +231,14 @@ const CartItemActions = styled.div`
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
+	flex-direction: column;
+	align-items: flex-start;
+`;
+
+const QuantityWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 `;
 
 const QuantityControl = styled.div`
@@ -292,6 +300,13 @@ const RemoveButton = styled.button`
 	&:hover {
 		color: #ff4444;
 	}
+`;
+
+const MaxQuantityWarning = styled.div`
+	color: var(--primary-color);
+	font-size: 0.8rem;
+	text-align: left;
+	font-weight: 400;
 `;
 
 const CartTotal = styled.div`
@@ -510,30 +525,37 @@ const Navbar = () => {
 												<CartItemCode>{item.code}</CartItemCode>
 												<CartItemPrice>${item.price}</CartItemPrice>
 												<CartItemActions>
-													<QuantityControl>
-														<QuantityButton
-															onClick={handleQuantityChange(
-																item.code,
-																item.quantity - 1
-															)}
-															disabled={item.quantity <= 1}
-														>
-															-
-														</QuantityButton>
-														<QuantityDisplay>{item.quantity}</QuantityDisplay>
-														<QuantityButton
-															onClick={handleQuantityChange(
-																item.code,
-																item.quantity + 1
-															)}
-															disabled={item.quantity >= item.stock}
-														>
-															+
-														</QuantityButton>
-													</QuantityControl>
-													<RemoveButton onClick={handleRemoveItem(item.code)}>
-														<FaTrash />
-													</RemoveButton>
+													<QuantityWrapper>
+														<QuantityControl>
+															<QuantityButton
+																onClick={handleQuantityChange(
+																	item.code,
+																	item.quantity - 1
+																)}
+																disabled={item.quantity <= 1}
+															>
+																-
+															</QuantityButton>
+															<QuantityDisplay>{item.quantity}</QuantityDisplay>
+															<QuantityButton
+																onClick={handleQuantityChange(
+																	item.code,
+																	item.quantity + 1
+																)}
+																disabled={item.quantity >= item.stock}
+															>
+																+
+															</QuantityButton>
+														</QuantityControl>
+														<RemoveButton onClick={handleRemoveItem(item.code)}>
+															<FaTrash />
+														</RemoveButton>
+													</QuantityWrapper>
+													{item.quantity >= item.stock && item.stock > 0 && (
+														<MaxQuantityWarning>
+															已達選購數量上限
+														</MaxQuantityWarning>
+													)}
 												</CartItemActions>
 											</CartItemInfo>
 										</CartItem>

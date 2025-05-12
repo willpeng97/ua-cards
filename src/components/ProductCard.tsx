@@ -118,12 +118,15 @@ const ProductPrice = styled.div`
 const StockInfo = styled.div`
 	color: #666;
 	font-size: 0.9rem;
-	margin-bottom: 1rem;
+	margin: 0.5rem 0;
+	display: inline-block;
+`;
 
-	@media (max-width: 768px) {
-		font-size: 0.8rem;
-		margin-bottom: 0.75rem;
-	}
+const MaxQuantityWarning = styled.div`
+	color: var(--primary-color);
+	font-size: 0.8rem;
+	margin-top: 0.25rem;
+	text-align: left;
 `;
 
 const ActionContainer = styled.div`
@@ -390,6 +393,9 @@ const ProductCard = ({
 							<MdOutlineAddShoppingCart />
 						</AddToCartButton>
 					</ActionContainer>
+					{quantity >= remainingStock && remainingStock > 0 && (
+						<MaxQuantityWarning>已達選購數量上限</MaxQuantityWarning>
+					)}
 				</ProductInfo>
 			</CardContainer>
 
