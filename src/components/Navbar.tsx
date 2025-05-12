@@ -34,12 +34,18 @@ const navLinkStyles = css`
 	}
 `;
 
+const NavbarBackground = styled.div`
+	background: linear-gradient(to bottom, #ffb485, #f1f1f1);
+	margin-bottom: 0.5rem;
+`;
+
 const NavbarContainer = styled.nav`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 1rem 1.5rem;
-	background: linear-gradient(to bottom, #ffb485, #f1f1f1);
+	padding: 1rem 1rem;
+	width: 1400px;
+	margin: 0 auto;
 	* {
 		-webkit-tap-highlight-color: transparent;
 		user-select: none;
@@ -395,155 +401,157 @@ const Navbar = () => {
 	};
 
 	return (
-		<NavbarContainer>
-			<Logo to="/">
-				<img src={logo} alt="Logo" />
-			</Logo>
-			<NavLinks>
-				<NavLink to="/">首頁</NavLink>
-				<NavButton
-					className="nav-popup-trigger"
-					onClick={() => togglePopup("guide")}
-				>
-					攻略
-					<FaChevronDown size={12} />
-					<NavPopup isOpen={activePopup === "guide"}>
-						<NavSection>
-							<NavItem
-								to="https://rugiacreation.com/ua/search"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								路基亞 UA 中文卡表
-								<FaExternalLinkAlt />
-							</NavItem>
-							<NavItem
-								to="https://torecards.com/unionarenatier/#google_vignette"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								Tier List
-								<FaExternalLinkAlt />
-							</NavItem>
-							<NavItem
-								to="https://www.unionarena-tcg.com/tc/"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								Union Arena 官網
-								<FaExternalLinkAlt />
-							</NavItem>
-							<NavItem
-								to="https://www.unionarena-tcg.com/tc/rules/limited.php"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								Union Arena 禁/限卡表
-								<FaExternalLinkAlt />
-							</NavItem>
-							<NavItem
-								to="https://yuyu-tei.jp/"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								yuyu-tei 遊遊亭 / yuyu亭
-								<FaExternalLinkAlt />
-							</NavItem>
-						</NavSection>
-					</NavPopup>
-				</NavButton>
-				<NavButton
-					className="nav-popup-trigger"
-					onClick={() => togglePopup("contact")}
-				>
-					聯絡我們
-					<FaChevronDown size={12} />
-					<NavPopup isOpen={activePopup === "contact"}>
-						<NavSection>
-							<NavItem
-								to="https://lin.ee/eRuNaiC"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								LINE 官方帳號 (@520nhcdh)
-								<FaExternalLinkAlt />
-							</NavItem>
-							<NavItem
-								to="https://myship.7-11.com.tw/cart/easy/GM2410225591590"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								7-11 賣貨便自填單
-								<FaExternalLinkAlt />
-							</NavItem>
-							<NavItem to="/report" rel="noopener noreferrer">
-								客服回報單
-							</NavItem>
-							<NavItem to="/notice" rel="noopener noreferrer">
-								購買須知
-							</NavItem>
-						</NavSection>
-					</NavPopup>
-				</NavButton>
-				<CartButton
-					className="nav-popup-trigger"
-					onClick={() => togglePopup("cart")}
-				>
-					<FaShoppingCart />
-					購物車
-					{cartItems.length > 0 && <CartBadge>{cartItems.length}</CartBadge>}
-					<CartPopup isOpen={activePopup === "cart"}>
-						{cartItems.length > 0 ? (
-							<>
-								{cartItems.map((item) => (
-									<CartItem key={item.code}>
-										<CartItemImage src={item.image} alt={item.title} />
-										<CartItemInfo>
-											<CartItemTitle>{item.title}</CartItemTitle>
-											<CartItemCode>{item.code}</CartItemCode>
-											<CartItemPrice>${item.price}</CartItemPrice>
-											<CartItemActions>
-												<QuantityControl>
-													<QuantityButton
-														onClick={handleQuantityChange(
-															item.code,
-															item.quantity - 1
-														)}
-														disabled={item.quantity <= 1}
-													>
-														-
-													</QuantityButton>
-													<QuantityDisplay>{item.quantity}</QuantityDisplay>
-													<QuantityButton
-														onClick={handleQuantityChange(
-															item.code,
-															item.quantity + 1
-														)}
-														disabled={item.quantity >= item.stock}
-													>
-														+
-													</QuantityButton>
-												</QuantityControl>
-												<RemoveButton onClick={handleRemoveItem(item.code)}>
-													<FaTrash />
-												</RemoveButton>
-											</CartItemActions>
-										</CartItemInfo>
-									</CartItem>
-								))}
-								<CartTotal>
-									<span>總金額</span>
-									<span>${totalAmount}</span>
-								</CartTotal>
-								<CheckoutButton to="/checkout">前往結帳</CheckoutButton>
-							</>
-						) : (
-							<EmptyCart>購物車是空的</EmptyCart>
-						)}
-					</CartPopup>
-				</CartButton>
-			</NavLinks>
-		</NavbarContainer>
+		<NavbarBackground>
+			<NavbarContainer>
+				<Logo to="/">
+					<img src={logo} alt="Logo" />
+				</Logo>
+				<NavLinks>
+					<NavLink to="/">首頁</NavLink>
+					<NavButton
+						className="nav-popup-trigger"
+						onClick={() => togglePopup("guide")}
+					>
+						攻略
+						<FaChevronDown size={12} />
+						<NavPopup isOpen={activePopup === "guide"}>
+							<NavSection>
+								<NavItem
+									to="https://rugiacreation.com/ua/search"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									路基亞 UA 中文卡表
+									<FaExternalLinkAlt />
+								</NavItem>
+								<NavItem
+									to="https://torecards.com/unionarenatier/#google_vignette"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Tier List
+									<FaExternalLinkAlt />
+								</NavItem>
+								<NavItem
+									to="https://www.unionarena-tcg.com/tc/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Union Arena 官網
+									<FaExternalLinkAlt />
+								</NavItem>
+								<NavItem
+									to="https://www.unionarena-tcg.com/tc/rules/limited.php"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Union Arena 禁/限卡表
+									<FaExternalLinkAlt />
+								</NavItem>
+								<NavItem
+									to="https://yuyu-tei.jp/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									yuyu-tei 遊遊亭 / yuyu亭
+									<FaExternalLinkAlt />
+								</NavItem>
+							</NavSection>
+						</NavPopup>
+					</NavButton>
+					<NavButton
+						className="nav-popup-trigger"
+						onClick={() => togglePopup("contact")}
+					>
+						聯絡我們
+						<FaChevronDown size={12} />
+						<NavPopup isOpen={activePopup === "contact"}>
+							<NavSection>
+								<NavItem
+									to="https://lin.ee/eRuNaiC"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									LINE 官方帳號 (@520nhcdh)
+									<FaExternalLinkAlt />
+								</NavItem>
+								<NavItem
+									to="https://myship.7-11.com.tw/cart/easy/GM2410225591590"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									7-11 賣貨便自填單
+									<FaExternalLinkAlt />
+								</NavItem>
+								<NavItem to="/report" rel="noopener noreferrer">
+									客服回報單
+								</NavItem>
+								<NavItem to="/notice" rel="noopener noreferrer">
+									購買須知
+								</NavItem>
+							</NavSection>
+						</NavPopup>
+					</NavButton>
+					<CartButton
+						className="nav-popup-trigger"
+						onClick={() => togglePopup("cart")}
+					>
+						<FaShoppingCart />
+						購物車
+						{cartItems.length > 0 && <CartBadge>{cartItems.length}</CartBadge>}
+						<CartPopup isOpen={activePopup === "cart"}>
+							{cartItems.length > 0 ? (
+								<>
+									{cartItems.map((item) => (
+										<CartItem key={item.code}>
+											<CartItemImage src={item.image} alt={item.title} />
+											<CartItemInfo>
+												<CartItemTitle>{item.title}</CartItemTitle>
+												<CartItemCode>{item.code}</CartItemCode>
+												<CartItemPrice>${item.price}</CartItemPrice>
+												<CartItemActions>
+													<QuantityControl>
+														<QuantityButton
+															onClick={handleQuantityChange(
+																item.code,
+																item.quantity - 1
+															)}
+															disabled={item.quantity <= 1}
+														>
+															-
+														</QuantityButton>
+														<QuantityDisplay>{item.quantity}</QuantityDisplay>
+														<QuantityButton
+															onClick={handleQuantityChange(
+																item.code,
+																item.quantity + 1
+															)}
+															disabled={item.quantity >= item.stock}
+														>
+															+
+														</QuantityButton>
+													</QuantityControl>
+													<RemoveButton onClick={handleRemoveItem(item.code)}>
+														<FaTrash />
+													</RemoveButton>
+												</CartItemActions>
+											</CartItemInfo>
+										</CartItem>
+									))}
+									<CartTotal>
+										<span>總金額</span>
+										<span>${totalAmount}</span>
+									</CartTotal>
+									<CheckoutButton to="/checkout">前往結帳</CheckoutButton>
+								</>
+							) : (
+								<EmptyCart>購物車是空的</EmptyCart>
+							)}
+						</CartPopup>
+					</CartButton>
+				</NavLinks>
+			</NavbarContainer>
+		</NavbarBackground>
 	);
 };
 
