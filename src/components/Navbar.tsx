@@ -17,7 +17,7 @@ import {
 } from "../utils/cartStorage";
 
 const navLinkStyles = css`
-	color: #333;
+	color: var(--neutral-800);
 	text-decoration: none;
 	font-weight: 600;
 	transition: color 0.3s ease;
@@ -30,7 +30,7 @@ const navLinkStyles = css`
 	gap: 0.25rem;
 
 	&:hover {
-		color: #ff6b00;
+		color: var(--neutral-700);
 	}
 `;
 

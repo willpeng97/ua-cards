@@ -351,7 +351,6 @@ const ProductCard = ({
 
 		setQuantity(0);
 		setShowToast(true);
-		setCartItems(getCartItems());
 	};
 
 	return (
@@ -372,7 +371,7 @@ const ProductCard = ({
 					<ProductTitle>{title}</ProductTitle>
 					<ProductCode>{code}</ProductCode>
 					<ProductPrice>NT$ {price}</ProductPrice>
-					<StockInfo>庫存: {remainingStock}</StockInfo>
+					<StockInfo>庫存: {stock}</StockInfo>
 					<ActionContainer>
 						<QuantityControl>
 							<QuantityButton onClick={handleDecrease} disabled={quantity < 1}>
