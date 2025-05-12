@@ -313,9 +313,20 @@ const CheckoutPage = () => {
 	};
 
 	const handleRemoveItem = (code: string) => {
-		const updatedItems = removeFromCart(code);
-		setCartItems(updatedItems);
-		setTotalAmount(getTotalAmount(updatedItems));
+		Swal.fire({
+			title: "確定要移除商品？",
+			showCancelButton: true,
+			confirmButtonText: "確定",
+			cancelButtonText: "取消",
+			reverseButtons: true,
+			confirmButtonColor: "red",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				const updatedItems = removeFromCart(code);
+				setCartItems(updatedItems);
+				setTotalAmount(getTotalAmount(updatedItems));
+			}
+		});
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

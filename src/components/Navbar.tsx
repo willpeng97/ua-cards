@@ -15,6 +15,7 @@ import {
 	removeFromCart,
 	getTotalAmount,
 } from "../utils/cartStorage";
+import Swal from "sweetalert2";
 
 const navLinkStyles = css`
 	color: var(--neutral-800);
@@ -410,9 +411,20 @@ const Navbar = () => {
 
 	const handleRemoveItem = (code: string) => (e: React.MouseEvent) => {
 		e.stopPropagation();
-		const updatedItems = removeFromCart(code);
-		setCartItems(updatedItems);
-		setTotalAmount(getTotalAmount(updatedItems));
+		Swal.fire({
+			title: "確定要移除商品？",
+			showCancelButton: true,
+			confirmButtonText: "確定",
+			cancelButtonText: "取消",
+			reverseButtons: true,
+			confirmButtonColor: "red",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				const updatedItems = removeFromCart(code);
+				setCartItems(updatedItems);
+				setTotalAmount(getTotalAmount(updatedItems));
+			}
+		});
 	};
 
 	return (
