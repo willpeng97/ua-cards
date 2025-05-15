@@ -49,16 +49,13 @@ export const orderApi = {
 
 	sendMail: async (sendMailData: SendMailData): Promise<ApiResponse> => {
 		try {
-			const response = await fetch(
-				"https://ua-cards.com/page/send_email_test.php",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(sendMailData),
-				}
-			);
+			const response = await fetch("https://ua-cards.com/page/send_email.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(sendMailData),
+			});
 
 			const text = await response.text();
 			console.log("Mail API Response:", text);

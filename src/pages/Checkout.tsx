@@ -241,6 +241,10 @@ const SubmitButton = styled.button`
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 	margin-top: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
 
 	&:hover {
 		background: var(--primary-dark);
@@ -249,6 +253,24 @@ const SubmitButton = styled.button`
 	&:disabled {
 		background: var(--neutral-400);
 		cursor: not-allowed;
+	}
+`;
+
+const Spinner = styled.div`
+	width: 1rem;
+	height: 1rem;
+	border: 2px solid #ffffff;
+	border-top: 2px solid transparent;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
 	}
 `;
 
@@ -380,7 +402,6 @@ const CheckoutPage = () => {
 				)
 				.join("");
 
-			// 同時發送訂單和郵件
 			const [orderResponse, mailResponse] = await Promise.all([
 				orderApi.saveOrder(orderData),
 				orderApi.sendMail({
@@ -518,7 +539,10 @@ const CheckoutPage = () => {
 							/>
 						</FormField>
 					</FormGroup>
-					<SubmitButton type="submit">7-11 賣貨便自填單結帳</SubmitButton>
+					<SubmitButton type="submit" disabled={isLoading}>
+						{isLoading && <Spinner />}
+						{isLoading ? "正在送出訂單..." : "7-11 賣貨便自填單結帳"}
+					</SubmitButton>
 				</Form>
 			</FormSection>
 		</CheckoutContainer>
