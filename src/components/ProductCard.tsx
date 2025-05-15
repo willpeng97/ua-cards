@@ -91,12 +91,14 @@ const ProductTitle = styled.h3`
 		font-size: 1rem;
 	}
 `;
-
 const ProductCode = styled.div`
 	font-size: 0.9rem;
 	color: #666;
 	margin: 0.5rem 0;
 	display: inline-block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 
 	@media (max-width: 768px) {
 		font-size: 0.8rem;
