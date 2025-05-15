@@ -19,13 +19,14 @@ import LoadingSpinner from "../components/LoadingSpinner";
 const CheckoutContainer = styled.div`
 	max-width: 1200px;
 	margin: 2rem auto;
-	padding: 0 1rem;
+	padding: 0 var(--spacing-md);
 	display: flex;
 	flex-direction: column;
 	gap: 2rem;
 
 	@media (max-width: 768px) {
 		grid-template-columns: 1fr;
+		padding: 0 var(--spacing-sm);
 	}
 `;
 
