@@ -45,7 +45,8 @@ const NavbarContainer = styled.nav`
 	justify-content: space-between;
 	align-items: center;
 	padding: 1rem 1rem;
-	width: 1400px;
+	width: 100%;
+	max-width: 1400px;
 	margin: 0 auto;
 	* {
 		-webkit-tap-highlight-color: transparent;

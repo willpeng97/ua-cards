@@ -25,6 +25,7 @@ const MainContent = styled.div`
 
 	@media (max-width: 768px) {
 		flex-direction: column;
+		padding: var(--spacing-sm);
 	}
 `;
 

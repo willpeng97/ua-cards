@@ -40,6 +40,10 @@ const CarouselContainer = styled.div`
 			transform: translate(-75%, -50%) rotate(135deg);
 		}
 	}
+
+	@media (max-width: 768px) {
+		padding: 0 var(--spacing-sm);
+	}
 `;
 
 // 輪播圖片容器

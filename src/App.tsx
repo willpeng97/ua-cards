@@ -23,6 +23,7 @@ const MainContent = styled.main`
 	flex: 1;
 	padding-bottom: 2rem;
 	max-width: 1400px;
+	width: 100%;
 	margin: 0 auto;
 `;
 
