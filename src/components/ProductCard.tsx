@@ -230,7 +230,6 @@ const ImageModal = styled.div<{ isOpen: boolean }>`
 	justify-content: center;
 	align-items: center;
 	z-index: 1000;
-	padding: 2rem;
 `;
 
 const ModalContent = styled.div`
@@ -247,12 +246,12 @@ const ModalImage = styled.img`
 
 const CloseButton = styled.button`
 	position: absolute;
-	top: -40px;
+	top: -4rem;
 	right: 0;
 	background: none;
 	border: none;
 	color: white;
-	font-size: 2rem;
+	font-size: 3rem;
 	cursor: pointer;
 	padding: 0.5rem;
 	display: flex;
