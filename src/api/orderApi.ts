@@ -10,12 +10,17 @@ interface OrderData {
 
 interface SendMailData {
 	orderDetails: string;
-	totalAmount: string;
+	totalAmount: number;
 	email: string;
 	phone: string;
 }
 
 interface OrderResponse {
+	success: boolean;
+	message?: string;
+}
+
+interface ApiResponse {
 	success: boolean;
 	message?: string;
 }
@@ -42,21 +47,37 @@ export const orderApi = {
 		}
 	},
 
-	sendMail: async (sendMailData: SendMailData): Promise<OrderResponse> => {
+	sendMail: async (sendMailData: SendMailData): Promise<ApiResponse> => {
 		try {
-			const response = await fetch("https://ua-cards.com/page/send_email.php", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(sendMailData),
-			});
+			const response = await fetch(
+				"https://ua-cards.com/page/send_email_test.php",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(sendMailData),
+				}
+			);
 
-			const result = await response.json();
-			return result;
+			const text = await response.text();
+			console.log("Mail API Response:", text);
+
+			// 檢查回應是否包含成功訊息
+			if (text.includes("郵件已成功發送")) {
+				return { success: true };
+			}
+
+			return {
+				success: false,
+				message: text || "郵件發送失敗",
+			};
 		} catch (error) {
-			console.error("發送電子郵件時發生錯誤：", error);
-			return { success: false, message: "無法發送電子郵件，請稍後再試。" };
+			console.error("發送郵件失敗:", error);
+			return {
+				success: false,
+				message: "發送郵件時發生錯誤",
+			};
 		}
 	},
 };

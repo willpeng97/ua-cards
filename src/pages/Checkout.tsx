@@ -364,47 +364,72 @@ const CheckoutPage = () => {
 		try {
 			const orderData = {
 				phone: formData.phone,
+				email: formData.email,
 				cart: cartItems.map((item) => ({
 					card_id: item.code,
 					quantity: item.quantity,
 				})),
 			};
 
-			const response = await orderApi.saveOrder(orderData);
+			const orderDetails = cartItems
+				.map(
+					(item) =>
+						`${item.title} - ${item.quantity} x $${item.price.toFixed(
+							2
+						)} (ID: ${item.code})\n`
+				)
+				.join("");
 
-			if (response.success) {
-				Swal.fire({
-					title: "訂單已送出!!",
-					text: `謝謝您的購買! 請記得至7-11賣貨便自填單填入電話及總金額: $${totalAmount}`,
-					icon: "success",
-					showCancelButton: true,
-					confirmButtonText: "前往填單",
-					cancelButtonText: "返回",
-					reverseButtons: true,
-					confirmButtonColor: "var(--info-color)",
-					cancelButtonColor: "#6c757d",
-				}).then((result) => {
-					clearCart();
-					if (result.isConfirmed) {
-						window.location.href =
-							"https://myship.7-11.com.tw/cart/easy/GM2410225591590";
-					} else {
-						window.location.href = "/";
-					}
-				});
-			} else {
-				Swal.fire({
-					title: "結帳失敗",
-					text: "結帳過程發生錯誤，請稍後再試",
-					icon: "error",
-					confirmButtonText: "確定",
-					confirmButtonColor: "var(--primary-color)",
-				});
+			// 同時發送訂單和郵件
+			const [orderResponse, mailResponse] = await Promise.all([
+				orderApi.saveOrder(orderData),
+				orderApi.sendMail({
+					email: formData.email,
+					phone: formData.phone,
+					totalAmount: totalAmount,
+					orderDetails: orderDetails,
+				}),
+			]);
+
+			console.log("Order Response:", orderResponse);
+			console.log("Mail Response:", mailResponse);
+
+			if (!orderResponse.success) {
+				throw new Error("訂單儲存失敗");
 			}
+
+			if (!mailResponse.success) {
+				throw new Error("郵件發送失敗");
+			}
+
+			// 兩個操作都成功
+			Swal.fire({
+				title: "訂單已送出!!",
+				text: `謝謝您的購買! 請記得至7-11賣貨便自填單填入電話及總金額: $${totalAmount}`,
+				icon: "success",
+				showCancelButton: true,
+				confirmButtonText: "前往填單",
+				cancelButtonText: "返回",
+				reverseButtons: true,
+				confirmButtonColor: "var(--info-color)",
+				cancelButtonColor: "#6c757d",
+			}).then((result) => {
+				clearCart();
+				if (result.isConfirmed) {
+					window.location.href =
+						"https://myship.7-11.com.tw/cart/easy/GM2410225591590";
+				} else {
+					window.location.href = "/";
+				}
+			});
 		} catch (err) {
+			console.error("Checkout error:", err);
 			Swal.fire({
 				title: "結帳失敗",
-				text: "結帳過程發生錯誤，請稍後再試",
+				text:
+					err instanceof Error
+						? err.message + "，請稍後再試"
+						: "結帳過程發生錯誤，請稍後再試",
 				icon: "error",
 				confirmButtonText: "確定",
 				confirmButtonColor: "var(--primary-color)",
