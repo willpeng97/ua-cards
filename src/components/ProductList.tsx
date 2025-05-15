@@ -102,7 +102,9 @@ const LoadMoreButton = styled.button`
 	border: 1px solid var(--neutral-400);
 	color: var(--neutral-600);
 	background-color: var(--neutral-100);
-	padding: 0.5rem 10rem;
+	padding: 0.5rem;
+	width: 100%;
+	max-width: 500px;
 	border-radius: 4px;
 	font-size: var(--font-size-medium);
 	cursor: pointer;
@@ -110,6 +112,7 @@ const LoadMoreButton = styled.button`
 	margin: 1rem auto;
 	display: block;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+	text-wrap: nowrap;
 
 	&:hover {
 		background-color: var(--neutral-200);
