@@ -151,7 +151,7 @@ const ProductList = ({
 	isLoading = false,
 }: ProductListProps) => {
 	const [isSortOpen, setIsSortOpen] = useState(false);
-	const [sortBy, setSortBy] = useState("default");
+	const [sortBy, setSortBy] = useState("nameAsc");
 	const [displayCount, setDisplayCount] = useState(INITIAL_ITEMS);
 
 	// 當分類改變時重置顯示數量
@@ -201,18 +201,17 @@ const ProductList = ({
 						<FaChevronDown size={12} />
 					</SortButton>
 					<SortOptions isOpen={isSortOpen}>
-						<SortOption onClick={() => handleSort("default")}>預設</SortOption>
-						<SortOption onClick={() => handleSort("priceAsc")}>
-							價格由低到高
-						</SortOption>
-						<SortOption onClick={() => handleSort("priceDesc")}>
-							價格由高到低
-						</SortOption>
 						<SortOption onClick={() => handleSort("nameAsc")}>
 							名稱 A-Z
 						</SortOption>
 						<SortOption onClick={() => handleSort("nameDesc")}>
 							名稱 Z-A
+						</SortOption>
+						<SortOption onClick={() => handleSort("priceAsc")}>
+							價格由低到高
+						</SortOption>
+						<SortOption onClick={() => handleSort("priceDesc")}>
+							價格由高到低
 						</SortOption>
 						<SortOption onClick={() => handleSort("stockAsc")}>
 							庫存由低到高

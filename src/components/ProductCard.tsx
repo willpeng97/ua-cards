@@ -30,6 +30,7 @@ const ImageContainer = styled.div`
 	padding-top: 140%; // 保持圖片比例
 	background-color: var(--neutral-100);
 	overflow: hidden;
+	border-radius: 4px;
 `;
 
 const ProductImage = styled.img<{ isLoaded: boolean }>`
@@ -38,10 +39,11 @@ const ProductImage = styled.img<{ isLoaded: boolean }>`
 	left: 0;
 	width: 100%;
 	height: 100%;
-	object-fit: cover;
+	object-fit: contain;
 	cursor: pointer;
 	transition: opacity 0.3s ease;
 	opacity: ${(props) => (props.isLoaded ? 1 : 0)};
+	background-color: white;
 
 	&:hover {
 		opacity: 0.9;
@@ -86,6 +88,8 @@ const ProductTitle = styled.h3`
 	font-size: 1.2rem;
 	margin: 0;
 	color: #333;
+	overflow: hidden;
+	white-space: nowrap;
 
 	@media (max-width: 768px) {
 		font-size: 1rem;
@@ -373,7 +377,8 @@ const ProductCard = ({
 					<ProductTitle>{title}</ProductTitle>
 					<ProductCode>{code}</ProductCode>
 					<ProductPrice>NT$ {price}</ProductPrice>
-					<StockInfo>庫存: {stock}</StockInfo>
+					<StockInfo>庫存: {stock > 9 ? "充足" : stock}</StockInfo>
+
 					<ActionContainer>
 						<QuantityControl>
 							<QuantityButton onClick={handleDecrease} disabled={quantity < 1}>

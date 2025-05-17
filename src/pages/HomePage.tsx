@@ -47,9 +47,51 @@ const HomePage = () => {
 				setSelectedAnime("全部作品");
 
 				// 獲取唯一的類別列表
-				const uniqueCategories = Array.from(
-					new Set(fetchedProducts.map((product) => product.category))
-				);
+				// const uniqueCategories = Array.from(
+				// 	new Set(fetchedProducts.map((product) => product.category))
+				// );
+				const uniqueCategories = [
+					"預購商品區",
+					"完整牌組",
+					"卡牌保護套",
+					"二星 & 三星 & AP",
+					"鋼之鍊金術師",
+					"超時空要塞",
+					"一拳超人",
+					"Code Geass 奪回的Rozé",
+					"2.5次元的誘惑",
+					"香格里拉 開拓異境",
+					"魔法少女小圓",
+					"明日方舟",
+					"刀劍神域",
+					"假面騎士",
+					"怪獸八號",
+					"學園偶像大師",
+					"超超超超喜歡你的100個女友",
+					"不死不運",
+					"SHY",
+					"進撃の巨人",
+					"GAMERA -Rebirth-",
+					"幽遊白書",
+					"黑色五葉草",
+					"排球少年",
+					"勝利の女神 NIKKE",
+					"美食獵人",
+					"SYNDUALITY Noir",
+					"Dr. Stone",
+					"藍色監獄",
+					"銀魂",
+					"我的英雄學院",
+					"我與機器子",
+					"BLEACH 死神",
+					"關於我轉生變成史萊姆這檔事",
+					"鬼滅の刃",
+					"偶像大師 閃耀色彩",
+					"HUNTER Ｘ HUNTER",
+					"咒術迴戰",
+					"Code Geass 反叛的魯路修",
+				];
+
 				setCategories(uniqueCategories);
 			} catch (error) {
 				console.error("獲取產品資料失敗:", error);
