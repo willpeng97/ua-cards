@@ -1,21 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import type { CartItem } from "../utils/cartStorage";
-import {
-	getCartItems,
-	getTotalAmount,
-	updateQuantity,
-	removeFromCart,
-	clearCart,
-	updateStock,
-} from "../utils/cartStorage";
 import processImg from "../assets/purchase_process.png";
 import Swal from "sweetalert2";
 import { cardApi } from "../api/cardApi";
 import { orderApi } from "../api/orderApi";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { useCart } from "../contexts/CartContext";
 
 const CheckoutContainer = styled.div`
 	max-width: 1200px;
@@ -293,9 +285,14 @@ interface Card {
 
 const CheckoutPage = () => {
 	const [products, setProducts] = useState<Card[]>([]);
-
-	const [cartItems, setCartItems] = useState<CartItem[]>([]);
-	const [totalAmount, setTotalAmount] = useState(0);
+	const {
+		cartItems,
+		totalAmount,
+		handleQuantityChange,
+		handleRemoveItem,
+		clearCartItems,
+		updateCartStock,
+	} = useCart();
 	const [formData, setFormData] = useState({
 		name: "",
 		phone: "",
@@ -314,11 +311,10 @@ const CheckoutPage = () => {
 				setProducts(response);
 
 				// 更新購物車中的庫存
-				const items = getCartItems();
-				items.forEach((item) => {
+				cartItems.forEach((item) => {
 					const product = response.find((p) => p.code === item.code);
 					if (product) {
-						updateStock(item.code, product.stock);
+						updateCartStock(item.code, product.stock);
 					}
 				});
 				setIsLoading(false);
@@ -330,63 +326,14 @@ const CheckoutPage = () => {
 		fetchProducts();
 	}, []);
 
-	// 當 products 更新時更新購物車資料
-	useEffect(() => {
-		const updateCartData = () => {
-			const items = getCartItems();
-			setCartItems(items);
-			setTotalAmount(getTotalAmount(items));
-		};
-		updateCartData();
-	}, [products]);
-
-	// 當 cartItems 更新時檢查庫存
-	useEffect(() => {
-		if (products.length > 0) {
-			checkAndAdjustStock();
-		}
-	}, [cartItems]);
-
-	const handleQuantityChange = (code: string, newQuantity: number) => {
-		const updatedItems = updateQuantity(code, newQuantity);
-		setCartItems(updatedItems);
-		setTotalAmount(getTotalAmount(updatedItems));
-	};
-
-	const handleRemoveItem = (code: string) => {
-		Swal.fire({
-			title: "確定要移除商品？",
-			showCancelButton: true,
-			confirmButtonText: "確定",
-			cancelButtonText: "取消",
-			reverseButtons: true,
-			confirmButtonColor: "red",
-		}).then((result) => {
-			if (result.isConfirmed) {
-				const updatedItems = removeFromCart(code);
-				setCartItems(updatedItems);
-				setTotalAmount(getTotalAmount(updatedItems));
-			}
-		});
-	};
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	};
-
 	// 檢查庫存並自動調整數量
 	const checkAndAdjustStock = () => {
-		const items = getCartItems();
 		let hasAdjusted = false;
 
-		items.forEach((item) => {
+		cartItems.forEach((item) => {
 			const product = products.find((p) => p.code === item.code);
 			if (product && product.stock < item.quantity) {
-				updateQuantity(item.code, product.stock);
+				handleQuantityChange(item.code, product.stock);
 				hasAdjusted = true;
 			}
 		});
@@ -399,13 +346,17 @@ const CheckoutPage = () => {
 				confirmButtonText: "確定",
 				confirmButtonColor: "var(--primary-color)",
 			});
-			// 更新購物車數據
-			const updatedItems = getCartItems();
-			setCartItems(updatedItems);
-			setTotalAmount(getTotalAmount(updatedItems));
 			return true;
 		}
 		return false;
+	};
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setFormData((prev) => ({
+			...prev,
+			[name]: value,
+		}));
 	};
 
 	// 結帳
@@ -478,7 +429,7 @@ const CheckoutPage = () => {
 				confirmButtonColor: "var(--info-color)",
 				cancelButtonColor: "#6c757d",
 			}).then((result) => {
-				clearCart();
+				clearCartItems();
 				if (result.isConfirmed) {
 					window.location.href =
 						"https://myship.7-11.com.tw/cart/easy/GM2410225591590";

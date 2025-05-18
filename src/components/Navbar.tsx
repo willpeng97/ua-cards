@@ -9,13 +9,8 @@ import {
 import { Link } from "react-router-dom";
 import logo from "../assets/LOGO.png";
 import type { CartItem } from "../utils/cartStorage";
-import {
-	getCartItems,
-	updateQuantity,
-	removeFromCart,
-	getTotalAmount,
-} from "../utils/cartStorage";
 import Swal from "sweetalert2";
+import { useCart } from "../contexts/CartContext";
 
 const navLinkStyles = css`
 	color: var(--neutral-800);
@@ -358,14 +353,13 @@ const EmptyCart = styled.div`
 
 const Navbar = () => {
 	const [activePopup, setActivePopup] = useState<string | null>(null);
-	const [cartItems, setCartItems] = useState<CartItem[]>([]);
-	const [totalAmount, setTotalAmount] = useState(0);
-
-	const updateCartData = () => {
-		const items = getCartItems();
-		setCartItems(items);
-		setTotalAmount(getTotalAmount(items));
-	};
+	const {
+		cartItems,
+		totalAmount,
+		handleQuantityChange,
+		handleRemoveItem,
+		updateCartData,
+	} = useCart();
 
 	useEffect(() => {
 		// 初始載入購物車數據
@@ -402,15 +396,13 @@ const Navbar = () => {
 		return () => document.removeEventListener("click", handleClickOutside);
 	}, []);
 
-	const handleQuantityChange =
+	const handleQuantityChangeWrapper =
 		(code: string, newQuantity: number) => (e: React.MouseEvent) => {
 			e.stopPropagation();
-			const updatedItems = updateQuantity(code, newQuantity);
-			setCartItems(updatedItems);
-			setTotalAmount(getTotalAmount(updatedItems));
+			handleQuantityChange(code, newQuantity);
 		};
 
-	const handleRemoveItem = (code: string) => (e: React.MouseEvent) => {
+	const handleRemoveItemWrapper = (code: string) => (e: React.MouseEvent) => {
 		e.stopPropagation();
 		Swal.fire({
 			title: "確定要移除商品？",
@@ -421,9 +413,7 @@ const Navbar = () => {
 			confirmButtonColor: "red",
 		}).then((result) => {
 			if (result.isConfirmed) {
-				const updatedItems = removeFromCart(code);
-				setCartItems(updatedItems);
-				setTotalAmount(getTotalAmount(updatedItems));
+				handleRemoveItem(code);
 			}
 		});
 	};
@@ -541,7 +531,7 @@ const Navbar = () => {
 													<QuantityWrapper>
 														<QuantityControl>
 															<QuantityButton
-																onClick={handleQuantityChange(
+																onClick={handleQuantityChangeWrapper(
 																	item.code,
 																	item.quantity - 1
 																)}
@@ -551,7 +541,7 @@ const Navbar = () => {
 															</QuantityButton>
 															<QuantityDisplay>{item.quantity}</QuantityDisplay>
 															<QuantityButton
-																onClick={handleQuantityChange(
+																onClick={handleQuantityChangeWrapper(
 																	item.code,
 																	item.quantity + 1
 																)}
@@ -560,7 +550,9 @@ const Navbar = () => {
 																+
 															</QuantityButton>
 														</QuantityControl>
-														<RemoveButton onClick={handleRemoveItem(item.code)}>
+														<RemoveButton
+															onClick={handleRemoveItemWrapper(item.code)}
+														>
 															<FaTrash />
 														</RemoveButton>
 													</QuantityWrapper>

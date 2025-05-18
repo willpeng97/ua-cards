@@ -8,6 +8,7 @@ import NoticePage from "./pages/NoticePage";
 import CheckoutPage from "./pages/Checkout";
 import ScrollToTop from "./components/ScrollToTop";
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { CartProvider } from "./contexts/CartContext";
 
 const AppContainer = styled.div`
 	background-color: #f1f1f1;
@@ -29,22 +30,24 @@ const MainContent = styled.main`
 
 function App() {
 	return (
-		<HashRouter>
-			<GlobalStyles />
-			<AppContainer>
-				<Navbar />
-				<MainContent>
-					<Routes>
-						<Route path="/" element={<HomePage />} />
-						<Route path="/report" element={<ReportPage />} />
-						<Route path="/notice" element={<NoticePage />} />
-						<Route path="/checkout" element={<CheckoutPage />} />
-					</Routes>
-				</MainContent>
-				<Footer />
-				<ScrollToTop />
-			</AppContainer>
-		</HashRouter>
+		<CartProvider>
+			<HashRouter>
+				<GlobalStyles />
+				<AppContainer>
+					<Navbar />
+					<MainContent>
+						<Routes>
+							<Route path="/" element={<HomePage />} />
+							<Route path="/report" element={<ReportPage />} />
+							<Route path="/notice" element={<NoticePage />} />
+							<Route path="/checkout" element={<CheckoutPage />} />
+						</Routes>
+					</MainContent>
+					<Footer />
+					<ScrollToTop />
+				</AppContainer>
+			</HashRouter>
+		</CartProvider>
 	);
 }
 
