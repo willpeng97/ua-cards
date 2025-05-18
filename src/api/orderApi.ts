@@ -25,6 +25,10 @@ interface ApiResponse {
 	message?: string;
 }
 
+interface InventoryData {
+	cart: OrderItem[];
+}
+
 export const orderApi = {
 	saveOrder: async (orderData: OrderData): Promise<OrderResponse> => {
 		try {
@@ -74,6 +78,37 @@ export const orderApi = {
 			return {
 				success: false,
 				message: "發送郵件時發生錯誤",
+			};
+		}
+	},
+
+	updateInventory: async (
+		inventoryData: InventoryData
+	): Promise<OrderResponse> => {
+		try {
+			const response = await fetch(
+				"https://ua-cards.com/page/inventory_cart.php",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(inventoryData),
+				}
+			);
+
+			if (!response.ok) {
+				const text = await response.text();
+				throw new Error("Server Error: " + text);
+			}
+
+			const result = await response.json();
+			return result;
+		} catch (error) {
+			console.error("更新庫存時發生錯誤：", error);
+			return {
+				success: false,
+				message: "無法更新庫存，請稍後再試。",
 			};
 		}
 	},

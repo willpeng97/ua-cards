@@ -308,6 +308,7 @@ const CheckoutPage = () => {
 	// 取得商品最新資料
 	useEffect(() => {
 		const fetchProducts = async () => {
+			setIsLoading(true);
 			try {
 				const response = await cardApi.getCards();
 				setProducts(response);
@@ -320,26 +321,31 @@ const CheckoutPage = () => {
 						updateStock(item.code, product.stock);
 					}
 				});
+				setIsLoading(false);
 			} catch (error) {
 				console.error("獲取商品資料失敗:", error);
 			}
 		};
+
+		fetchProducts();
+	}, []);
+
+	// 當 products 更新時更新購物車資料
+	useEffect(() => {
 		const updateCartData = () => {
 			const items = getCartItems();
 			setCartItems(items);
 			setTotalAmount(getTotalAmount(items));
 		};
-
-		fetchProducts();
 		updateCartData();
-	}, []);
+	}, [products]);
 
-	// 當 products 更新時檢查庫存
+	// 當 cartItems 更新時檢查庫存
 	useEffect(() => {
 		if (products.length > 0) {
 			checkAndAdjustStock();
 		}
-	}, [products]);
+	}, [cartItems]);
 
 	const handleQuantityChange = (code: string, newQuantity: number) => {
 		const updatedItems = updateQuantity(code, newQuantity);
@@ -388,7 +394,7 @@ const CheckoutPage = () => {
 		if (hasAdjusted) {
 			Swal.fire({
 				title: "購物車已更新",
-				text: "部分商品庫存不足，已自動調整數量，請確認後再進行結帳",
+				text: "部分商品庫存不足，已自動調整數量，請確認後再結帳。",
 				icon: "info",
 				confirmButtonText: "確定",
 				confirmButtonColor: "var(--primary-color)",
@@ -432,28 +438,35 @@ const CheckoutPage = () => {
 				)
 				.join("");
 
-			const [orderResponse, mailResponse] = await Promise.all([
-				orderApi.saveOrder(orderData),
-				orderApi.sendMail({
-					email: formData.email,
-					phone: formData.phone,
-					totalAmount: totalAmount,
-					orderDetails: orderDetails,
-				}),
-			]);
+			// 先更新庫存
+			const inventoryResponse = await orderApi.updateInventory({
+				cart: orderData.cart,
+			});
 
-			console.log("Order Response:", orderResponse);
-			console.log("Mail Response:", mailResponse);
-
-			if (!orderResponse.success) {
-				throw new Error("訂單儲存失敗");
+			if (!inventoryResponse.success) {
+				throw new Error(inventoryResponse.message || "庫存更新失敗");
 			}
+
+			// 庫存更新成功後，發送郵件
+			const mailResponse = await orderApi.sendMail({
+				email: formData.email,
+				phone: formData.phone,
+				totalAmount: totalAmount,
+				orderDetails: orderDetails,
+			});
 
 			if (!mailResponse.success) {
 				throw new Error("郵件發送失敗");
 			}
 
-			// 兩個操作都成功
+			// 最後儲存訂單
+			const orderResponse = await orderApi.saveOrder(orderData);
+
+			if (!orderResponse.success) {
+				throw new Error("訂單儲存失敗");
+			}
+
+			// 所有操作都成功
 			Swal.fire({
 				title: "訂單已送出!!",
 				text: `謝謝您的購買! 請記得至7-11賣貨便自填單填入電話及總金額: $${totalAmount}`,
