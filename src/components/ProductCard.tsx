@@ -377,7 +377,9 @@ const ProductCard = ({
 					<ProductTitle>{title}</ProductTitle>
 					<ProductCode>{code}</ProductCode>
 					<ProductPrice>NT$ {price}</ProductPrice>
-					<StockInfo>庫存: {stock > 9 ? "充足" : stock}</StockInfo>
+					<StockInfo>
+						庫存: {remainingStock > 9 ? "充足" : remainingStock}
+					</StockInfo>
 
 					<ActionContainer>
 						<QuantityControl>
