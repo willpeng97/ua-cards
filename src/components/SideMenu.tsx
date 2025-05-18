@@ -100,6 +100,8 @@ const MenuItem = styled.li<{ isActive?: boolean }>`
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+	font-size: 1rem;
+	line-height: 1.2;
 
 	&:hover {
 		color: var(--primary-color);

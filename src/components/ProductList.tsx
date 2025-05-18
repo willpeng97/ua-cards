@@ -154,9 +154,14 @@ const ProductList = ({
 	const [sortBy, setSortBy] = useState("nameAsc");
 	const [displayCount, setDisplayCount] = useState(INITIAL_ITEMS);
 
-	// 當分類改變時重置顯示數量
+	// 當分類改變時重置顯示數量、排序方式
 	useEffect(() => {
 		setDisplayCount(INITIAL_ITEMS);
+
+		// 客製化排序
+		if (title === "卡牌保護套" || title === "二星 & 三星 & AP") {
+			setSortBy("priceDesc");
+		}
 	}, [title]);
 
 	const handleSort = (type: string) => {

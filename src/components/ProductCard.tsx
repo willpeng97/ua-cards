@@ -85,16 +85,16 @@ const ProductInfo = styled.div`
 `;
 
 const ProductTitle = styled.h3`
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 	margin: 0;
 	color: #333;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	height: 2rem;
+	line-height: 1.1;
+	display: flex;
+	align-items: center;
 
 	@media (max-width: 768px) {
-		font-size: 1rem;
+		font-size: 0.9rem;
 	}
 `;
 const ProductCode = styled.div`
