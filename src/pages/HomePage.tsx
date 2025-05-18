@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import SideMenu from "../components/SideMenu";
 import ProductList from "../components/ProductList";
-import HomeCarousel from "../components/HomeCarousel";
+import {
+	HomeCarousel,
+	CarouselItem as CarouselItemProps,
+} from "../components/HomeCarousel";
 import { useState, useCallback, useEffect } from "react";
-import { cardApi } from "../api/cardApi";
+import { cardApi } from "../api/commonApi";
 
 interface Product {
 	id: number;
@@ -36,6 +39,7 @@ const HomePage = () => {
 	const [allProducts, setAllProducts] = useState<Product[]>([]);
 	const [categories, setCategories] = useState<string[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [carouselItems, setCarouselItems] = useState<CarouselItemProps[]>([]);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -99,7 +103,18 @@ const HomePage = () => {
 				setIsLoading(false);
 			}
 		};
+
+		const fetchCarousel = async () => {
+			try {
+				const fetchedCarousel = await cardApi.getCarousel();
+				setCarouselItems(fetchedCarousel);
+			} catch (error) {
+				console.error("獲取輪播資料失敗:", error);
+			}
+		};
+
 		fetchProducts();
+		fetchCarousel();
 	}, []);
 
 	const filterProducts = useCallback(
@@ -145,7 +160,7 @@ const HomePage = () => {
 
 	return (
 		<>
-			<HomeCarousel />
+			<HomeCarousel carouselItems={carouselItems} />
 
 			<MainContent>
 				<SideMenu

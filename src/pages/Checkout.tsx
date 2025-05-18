@@ -4,7 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import type { CartItem } from "../utils/cartStorage";
 import processImg from "../assets/purchase_process.png";
 import Swal from "sweetalert2";
-import { cardApi } from "../api/cardApi";
+import { cardApi } from "../api/commonApi";
 import { orderApi } from "../api/orderApi";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useCart } from "../contexts/CartContext";

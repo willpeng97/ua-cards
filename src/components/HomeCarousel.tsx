@@ -64,37 +64,20 @@ const CarouselItem = styled.div`
 	}
 `;
 
-interface CarouselItem {
+export interface CarouselItem {
 	id: number;
 	image: string;
 	link: string;
 	alt: string;
 }
 
-// 輪播內容
-const carouselItems: CarouselItem[] = [
-	{
-		id: 1,
-		image: "https://www.unionarena-tcg.com/tc/images/top/bnr/mv/KIN/pc_01.png",
-		link: "https://www.unionarena-tcg.com/tc/news/?tags=KIN",
-		alt: "新品上市",
-	},
-	{
-		id: 2,
-		image:
-			"https://www.unionarena-tcg.com/tc/images/top/bnr/mv/MCR/pc_01.png?v2",
-		link: "https://www.unionarena-tcg.com/tc/news/?tags=MCR",
-		alt: "限時特價",
-	},
-	{
-		id: 3,
-		image: "https://www.unionarena-tcg.com/tc/images/top/bnr/mv/FMA/pc_01.png",
-		link: "https://www.unionarena-tcg.com/tc/news/?tags=FMA",
-		alt: "會員專屬",
-	},
-];
+interface HomeCarouselProps {
+	carouselItems: CarouselItem[];
+}
 
-const HomeCarousel = () => {
+export const HomeCarousel: React.FC<HomeCarouselProps> = ({
+	carouselItems,
+}) => {
 	const handleCarouselClick = (link: string) => {
 		window.open(link, "_blank");
 	};
@@ -119,5 +102,3 @@ const HomeCarousel = () => {
 		</CarouselContainer>
 	);
 };
-
-export default HomeCarousel;

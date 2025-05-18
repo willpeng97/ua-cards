@@ -32,13 +32,16 @@ interface InventoryData {
 export const orderApi = {
 	saveOrder: async (orderData: OrderData): Promise<OrderResponse> => {
 		try {
-			const response = await fetch("https://ua-cards.com/page/save_order.php", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(orderData),
-			});
+			const response = await fetch(
+				"https://ua-cards.com/shop_backend/save_order.php",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(orderData),
+				}
+			);
 
 			const result = await response.json();
 			return result;
@@ -53,13 +56,16 @@ export const orderApi = {
 
 	sendMail: async (sendMailData: SendMailData): Promise<ApiResponse> => {
 		try {
-			const response = await fetch("https://ua-cards.com/page/send_email.php", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(sendMailData),
-			});
+			const response = await fetch(
+				"https://ua-cards.com/shop_backend/send_email.php",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(sendMailData),
+				}
+			);
 
 			const text = await response.text();
 			console.log("Mail API Response:", text);
@@ -87,7 +93,7 @@ export const orderApi = {
 	): Promise<OrderResponse> => {
 		try {
 			const response = await fetch(
-				"https://ua-cards.com/page/inventory_cart.php",
+				"https://ua-cards.com/shop_backend/inventory_cart.php",
 				{
 					method: "POST",
 					headers: {
