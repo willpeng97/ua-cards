@@ -311,21 +311,26 @@ const CheckoutPage = () => {
 			try {
 				const response = await cardApi.getCards();
 				setProducts(response);
+
+				// 更新購物車中的庫存
+				const items = getCartItems();
+				items.forEach((item) => {
+					const product = response.find((p) => p.code === item.code);
+					if (product) {
+						updateStock(item.code, product.stock);
+					}
+				});
 			} catch (error) {
 				console.error("獲取商品資料失敗:", error);
 			}
 		};
-		fetchProducts();
-	}, []);
-
-	// 取得購物車資料
-	useEffect(() => {
 		const updateCartData = () => {
 			const items = getCartItems();
 			setCartItems(items);
 			setTotalAmount(getTotalAmount(items));
 		};
 
+		fetchProducts();
 		updateCartData();
 	}, []);
 
@@ -374,11 +379,8 @@ const CheckoutPage = () => {
 
 		items.forEach((item) => {
 			const product = products.find((p) => p.code === item.code);
-			console.log("product", product);
-			console.log("item", item);
 			if (product && product.stock < item.quantity) {
 				updateQuantity(item.code, product.stock);
-				updateStock(item.code, product.stock);
 				hasAdjusted = true;
 			}
 		});
