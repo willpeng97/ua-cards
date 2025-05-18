@@ -390,9 +390,7 @@ const CheckoutPage = () => {
 				.join("");
 
 			// 先更新庫存
-			const inventoryResponse = await orderApi.updateInventory({
-				cart: orderData.cart,
-			});
+			const inventoryResponse = await orderApi.updateInventory(orderData.cart);
 
 			if (!inventoryResponse.success) {
 				throw new Error(inventoryResponse.message || "庫存更新失敗");

@@ -25,9 +25,7 @@ interface ApiResponse {
 	message?: string;
 }
 
-interface InventoryData {
-	cart: OrderItem[];
-}
+type InventoryData = OrderItem[];
 
 export const orderApi = {
 	saveOrder: async (orderData: OrderData): Promise<OrderResponse> => {
