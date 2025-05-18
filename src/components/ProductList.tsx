@@ -159,8 +159,10 @@ const ProductList = ({
 		setDisplayCount(INITIAL_ITEMS);
 
 		// 客製化排序
-		if (title === "卡牌保護套" || title === "二星 & 三星 & AP") {
+		if (title === "二星 & 三星 & AP") {
 			setSortBy("priceDesc");
+		} else if (title === "卡牌保護套") {
+			setSortBy("codeAsc");
 		}
 	}, [title]);
 
@@ -171,6 +173,10 @@ const ProductList = ({
 	};
 
 	const sortedProducts = [...products].sort((a, b) => {
+		// 提取編號中的數字部分進行排序，for 保護套
+		const getNumber = (code: string) =>
+			parseInt(code.match(/\d+$/)?.[0] || "0");
+
 		switch (sortBy) {
 			case "priceAsc":
 				return a.price - b.price;
@@ -184,6 +190,8 @@ const ProductList = ({
 				return a.stock - b.stock;
 			case "stockDesc":
 				return b.stock - a.stock;
+			case "codeAsc": // 保護套排序
+				return getNumber(a.code) - getNumber(b.code);
 			default:
 				return 0;
 		}
