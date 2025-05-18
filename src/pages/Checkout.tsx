@@ -380,15 +380,6 @@ const CheckoutPage = () => {
 				})),
 			};
 
-			const orderDetails = cartItems
-				.map(
-					(item) =>
-						`${item.title} - ${item.quantity} x $${item.price.toFixed(
-							2
-						)} (ID: ${item.code})\n`
-				)
-				.join("");
-
 			// 先更新庫存
 			const inventoryResponse = await orderApi.updateInventory(orderData.cart);
 
@@ -401,7 +392,13 @@ const CheckoutPage = () => {
 				email: formData.email,
 				phone: formData.phone,
 				totalAmount: totalAmount,
-				orderDetails: orderDetails,
+				cards: cartItems.map((item) => ({
+					name: item.title,
+					code: item.code,
+					price: item.price,
+					count: item.quantity,
+					image: item.image,
+				})),
 			});
 
 			if (!mailResponse.success) {

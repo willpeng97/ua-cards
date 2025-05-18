@@ -8,11 +8,19 @@ interface OrderData {
 	cart: OrderItem[];
 }
 
+interface Card {
+	name: string;
+	code: string;
+	price: number;
+	count: number;
+	image: string;
+}
+
 interface SendMailData {
-	orderDetails: string;
 	totalAmount: number;
 	email: string;
 	phone: string;
+	cards: Card[];
 }
 
 interface OrderResponse {
