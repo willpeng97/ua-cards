@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { FaSearch, FaTimes, FaChevronDown } from "react-icons/fa";
 import { useState } from "react";
 
 const SideMenuContainer = styled.div`
@@ -13,13 +13,43 @@ const SideMenuContainer = styled.div`
 
 	@media (max-width: 768px) {
 		width: 100%;
+		position: relative;
+		top: 0;
+		padding: var(--spacing-sm);
 	}
 `;
 
-const MenuTitle = styled.h2`
+const MenuTitle = styled.h2<{ isOpen: boolean }>`
 	color: var(--neutral-800);
 	font-size: var(--font-size-large);
 	padding-bottom: var(--spacing-sm);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	cursor: pointer;
+
+	@media (max-width: 768px) {
+		font-size: var(--font-size-normal);
+		padding-left: var(--spacing-sm);
+		padding-right: var(--spacing-sm);
+		padding-bottom: ${(props) => (props.isOpen ? "var(--spacing-md)" : "0")};
+	}
+`;
+
+const MenuToggle = styled(FaChevronDown)<{ isOpen: boolean }>`
+	display: none;
+	transition: transform 0.3s ease;
+	transform: rotate(${(props) => (props.isOpen ? "180deg" : "0")});
+
+	@media (max-width: 768px) {
+		display: block;
+	}
+`;
+
+const MenuContent = styled.div<{ isOpen: boolean }>`
+	@media (max-width: 768px) {
+		display: ${(props) => (props.isOpen ? "block" : "none")};
+	}
 `;
 
 const SearchContainer = styled.div`
@@ -108,6 +138,15 @@ const MenuItem = styled.li<{ isActive?: boolean }>`
 		background-color: var(--neutral-200);
 		border-left: 4px solid var(--primary-color);
 	}
+
+	@media (max-width: 768px) {
+		margin-bottom: 0.5rem;
+		border-right: 1px solid var(--neutral-500);
+		border-left: none;
+		&:hover {
+			border-left: none;
+		}
+	}
 `;
 
 interface SideMenuProps {
@@ -124,6 +163,7 @@ const SideMenu = ({
 	categoryList,
 }: SideMenuProps) => {
 	const [searchValue, setSearchValue] = useState("");
+	const [isOpen, setIsOpen] = useState(false);
 
 	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
@@ -146,33 +186,38 @@ const SideMenu = ({
 
 	return (
 		<SideMenuContainer>
-			<MenuTitle>卡牌分類</MenuTitle>
-			<SearchContainer>
-				<SearchIcon />
-				<SearchInput
-					type="text"
-					placeholder="搜尋卡牌..."
-					value={searchValue}
-					onChange={handleSearch}
-				/>
-				{searchValue && (
-					<ClearButton onClick={handleClear}>
-						<FaTimes />
-					</ClearButton>
-				)}
-			</SearchContainer>
-			<MenuList>
-				{menuItems.map((item) => (
-					<MenuItem
-						key={item}
-						onClick={() => handleSelect(item)}
-						isActive={item === selectedItem}
-						title={item}
-					>
-						{item}
-					</MenuItem>
-				))}
-			</MenuList>
+			<MenuTitle onClick={() => setIsOpen(!isOpen)} isOpen={isOpen}>
+				卡牌分類
+				<MenuToggle isOpen={isOpen} />
+			</MenuTitle>
+			<MenuContent isOpen={isOpen}>
+				<SearchContainer>
+					<SearchIcon />
+					<SearchInput
+						type="text"
+						placeholder="搜尋卡牌..."
+						value={searchValue}
+						onChange={handleSearch}
+					/>
+					{searchValue && (
+						<ClearButton onClick={handleClear}>
+							<FaTimes />
+						</ClearButton>
+					)}
+				</SearchContainer>
+				<MenuList>
+					{menuItems.map((item) => (
+						<MenuItem
+							key={item}
+							onClick={() => handleSelect(item)}
+							isActive={item === selectedItem}
+							title={item}
+						>
+							{item}
+						</MenuItem>
+					))}
+				</MenuList>
+			</MenuContent>
 		</SideMenuContainer>
 	);
 };
