@@ -57,6 +57,19 @@ export const updateQuantity = (code: string, quantity: number) => {
 	return items;
 };
 
+export const updateStock = (code: string, stock: number) => {
+	const items = getCartItems();
+	const item = items.find((i) => i.code === code);
+
+	if (item) {
+		item.stock = stock;
+		saveCartItems(items);
+		window.dispatchEvent(new Event("cartUpdated"));
+	}
+
+	return items;
+};
+
 export const clearCart = () => {
 	saveCartItems([]);
 	return [];

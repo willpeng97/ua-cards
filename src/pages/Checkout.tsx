@@ -9,6 +9,7 @@ import {
 	updateQuantity,
 	removeFromCart,
 	clearCart,
+	updateStock,
 } from "../utils/cartStorage";
 import processImg from "../assets/purchase_process.png";
 import Swal from "sweetalert2";
@@ -291,6 +292,8 @@ interface Card {
 }
 
 const CheckoutPage = () => {
+	const [products, setProducts] = useState<Card[]>([]);
+
 	const [cartItems, setCartItems] = useState<CartItem[]>([]);
 	const [totalAmount, setTotalAmount] = useState(0);
 	const [formData, setFormData] = useState({
@@ -301,23 +304,8 @@ const CheckoutPage = () => {
 		note: "",
 	});
 	const [isLoading, setIsLoading] = useState(false);
-	const [products, setProducts] = useState<Card[]>([]);
 
-	useEffect(() => {
-		const updateCartData = () => {
-			const items = getCartItems();
-			setCartItems(items);
-			setTotalAmount(getTotalAmount(items));
-		};
-
-		updateCartData();
-		window.addEventListener("cartUpdated", updateCartData);
-
-		return () => {
-			window.removeEventListener("cartUpdated", updateCartData);
-		};
-	}, []);
-
+	// 取得商品最新資料
 	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
@@ -329,6 +317,24 @@ const CheckoutPage = () => {
 		};
 		fetchProducts();
 	}, []);
+
+	// 取得購物車資料
+	useEffect(() => {
+		const updateCartData = () => {
+			const items = getCartItems();
+			setCartItems(items);
+			setTotalAmount(getTotalAmount(items));
+		};
+
+		updateCartData();
+	}, []);
+
+	// 當 products 更新時檢查庫存
+	useEffect(() => {
+		if (products.length > 0) {
+			checkAndAdjustStock();
+		}
+	}, [products]);
 
 	const handleQuantityChange = (code: string, newQuantity: number) => {
 		const updatedItems = updateQuantity(code, newQuantity);
@@ -361,24 +367,45 @@ const CheckoutPage = () => {
 		}));
 	};
 
-	const validateStock = () => {
-		return cartItems.every((item) => {
+	// 檢查庫存並自動調整數量
+	const checkAndAdjustStock = () => {
+		const items = getCartItems();
+		let hasAdjusted = false;
+
+		items.forEach((item) => {
 			const product = products.find((p) => p.code === item.code);
-			return product && product.stock >= item.quantity;
+			console.log("product", product);
+			console.log("item", item);
+			if (product && product.stock < item.quantity) {
+				updateQuantity(item.code, product.stock);
+				updateStock(item.code, product.stock);
+				hasAdjusted = true;
+			}
 		});
-	};
 
-	const handleCheckout = async (e: React.FormEvent) => {
-		e.preventDefault();
-
-		if (!validateStock()) {
+		if (hasAdjusted) {
 			Swal.fire({
-				title: "庫存不足",
-				text: "部分商品庫存不足，請重新確認購物車",
-				icon: "error",
+				title: "購物車已更新",
+				text: "部分商品庫存不足，已自動調整數量，請確認後再進行結帳",
+				icon: "info",
 				confirmButtonText: "確定",
 				confirmButtonColor: "var(--primary-color)",
 			});
+			// 更新購物車數據
+			const updatedItems = getCartItems();
+			setCartItems(updatedItems);
+			setTotalAmount(getTotalAmount(updatedItems));
+			return true;
+		}
+		return false;
+	};
+
+	// 結帳
+	const handleCheckout = async (e: React.FormEvent) => {
+		e.preventDefault();
+
+		// 檢查庫存並自動調整數量
+		if (checkAndAdjustStock()) {
 			return;
 		}
 

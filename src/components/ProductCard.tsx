@@ -88,7 +88,9 @@ const ProductTitle = styled.h3`
 	font-size: 1.2rem;
 	margin: 0;
 	color: #333;
+	white-space: nowrap;
 	overflow: hidden;
+	text-overflow: ellipsis;
 	white-space: nowrap;
 
 	@media (max-width: 768px) {
@@ -374,7 +376,7 @@ const ProductCard = ({
 					/>
 				</ImageContainer>
 				<ProductInfo>
-					<ProductTitle>{title}</ProductTitle>
+					<ProductTitle title={title}>{title}</ProductTitle>
 					<ProductCode>{code}</ProductCode>
 					<ProductPrice>NT$ {price}</ProductPrice>
 					<StockInfo>
