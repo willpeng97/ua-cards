@@ -6,7 +6,7 @@ import {
 	CarouselItem as CarouselItemProps,
 } from "../components/HomeCarousel";
 import { useState, useCallback, useEffect } from "react";
-import { cardApi } from "../api/commonApi";
+import { commonApi } from "../api/commonApi";
 
 interface Product {
 	id: number;
@@ -45,7 +45,7 @@ const HomePage = () => {
 		const fetchProducts = async () => {
 			try {
 				setIsLoading(true);
-				const fetchedProducts = await cardApi.getCards();
+				const fetchedProducts = await commonApi.getCards();
 				setAllProducts(fetchedProducts);
 				setProducts(fetchedProducts);
 				setSelectedAnime("全部作品");
@@ -59,6 +59,8 @@ const HomePage = () => {
 					"完整牌組",
 					"卡牌保護套",
 					"二星 & 三星 & AP",
+					"金肉人",
+					"防風少年",
 					"鋼之鍊金術師",
 					"超時空要塞",
 					"一拳超人",
@@ -106,7 +108,7 @@ const HomePage = () => {
 
 		const fetchCarousel = async () => {
 			try {
-				const fetchedCarousel = await cardApi.getCarousel();
+				const fetchedCarousel = await commonApi.getCarousel();
 				setCarouselItems(fetchedCarousel);
 			} catch (error) {
 				console.error("獲取輪播資料失敗:", error);

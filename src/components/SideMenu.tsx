@@ -97,6 +97,10 @@ const MenuItem = styled.li<{ isActive?: boolean }>`
 	border-left: ${(props) =>
 		props.isActive ? "4px solid var(--primary-color)" : "none"};
 
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+
 	&:hover {
 		color: var(--primary-color);
 		background-color: var(--neutral-200);
@@ -161,6 +165,7 @@ const SideMenu = ({
 						key={item}
 						onClick={() => handleSelect(item)}
 						isActive={item === selectedItem}
+						title={item}
 					>
 						{item}
 					</MenuItem>

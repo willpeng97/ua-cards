@@ -4,7 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import type { CartItem } from "../utils/cartStorage";
 import processImg from "../assets/purchase_process.png";
 import Swal from "sweetalert2";
-import { cardApi } from "../api/commonApi";
+import { commonApi } from "../api/commonApi";
 import { orderApi } from "../api/orderApi";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useCart } from "../contexts/CartContext";
@@ -307,7 +307,7 @@ const CheckoutPage = () => {
 		const fetchProducts = async () => {
 			setIsLoading(true);
 			try {
-				const response = await cardApi.getCards();
+				const response = await commonApi.getCards();
 				setProducts(response);
 
 				// 更新購物車中的庫存

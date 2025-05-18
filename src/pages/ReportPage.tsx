@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { commonApi } from "../api/commonApi";
+import Swal from "sweetalert2";
 
 const ReportContainer = styled.div`
 	width: 800px;
@@ -97,8 +99,9 @@ const ReportPage = () => {
 	const [formData, setFormData] = useState({
 		phone: "",
 		email: "",
-		message: "",
+		issue: "",
 	});
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -110,10 +113,39 @@ const ReportPage = () => {
 		}));
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		// TODO: 實現表單提交邏輯
-		console.log("Form submitted:", formData);
+		setIsSubmitting(true);
+
+		try {
+			const result = await commonApi.sendReport(formData);
+			await Swal.fire({
+				icon: result.success ? "success" : "error",
+				title: result.success ? "發送成功" : "發送失敗",
+				text: result.message,
+				confirmButtonText: "確定",
+				confirmButtonColor: "var(--primary-color)",
+			});
+
+			if (result.success) {
+				setFormData({
+					phone: "",
+					email: "",
+					issue: "",
+				});
+			}
+		} catch (error) {
+			console.error("發送回報失敗:", error);
+			await Swal.fire({
+				icon: "error",
+				title: "發送失敗",
+				text: "發送回報時出錯，請稍後再試。",
+				confirmButtonText: "確定",
+				confirmButtonColor: "var(--primary-color)",
+			});
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	return (
@@ -146,16 +178,18 @@ const ReportPage = () => {
 					/>
 				</FormGroup>
 				<FormGroup>
-					<Label htmlFor="message">問題描述</Label>
+					<Label htmlFor="issue">問題描述</Label>
 					<TextArea
-						id="message"
-						name="message"
-						value={formData.message}
+						id="issue"
+						name="issue"
+						value={formData.issue}
 						onChange={handleChange}
 						required
 					/>
 				</FormGroup>
-				<SubmitButton type="submit">提交</SubmitButton>
+				<SubmitButton type="submit" disabled={isSubmitting}>
+					{isSubmitting ? "發送中..." : "提交"}
+				</SubmitButton>
 			</Form>
 		</ReportContainer>
 	);
