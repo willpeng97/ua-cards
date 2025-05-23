@@ -63,7 +63,7 @@ export const orderApi = {
 	sendMail: async (sendMailData: SendMailData): Promise<ApiResponse> => {
 		try {
 			const response = await fetch(
-				"https://ua-cards.com/shop_backend/send_email.php",
+				"https://ua-cards.com/shop_backend/sendmailNew.php",
 				{
 					method: "POST",
 					headers: {
@@ -77,7 +77,7 @@ export const orderApi = {
 			console.log("Mail API Response:", text);
 
 			// 檢查回應是否包含成功訊息
-			if (text.includes("郵件已成功發送")) {
+			if (text.includes("訂單已成功發送")) {
 				return { success: true };
 			}
 
