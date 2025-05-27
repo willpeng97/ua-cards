@@ -128,7 +128,8 @@ const HomePage = () => {
 				filtered = filtered.filter(
 					(product) =>
 						product.title.toLowerCase().includes(lowerQuery) ||
-						product.code.toLowerCase().includes(lowerQuery)
+						product.code.toLowerCase().includes(lowerQuery) ||
+						product.category.toLowerCase().includes(lowerQuery)
 				);
 				setSelectedAnime(`"${query}" 的搜尋結果`);
 			} else if (

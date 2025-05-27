@@ -55,6 +55,8 @@ const MenuContent = styled.div<{ isOpen: boolean }>`
 const SearchContainer = styled.div`
 	position: relative;
 	margin-bottom: var(--spacing-sm);
+	display: flex;
+	gap: var(--spacing-sm);
 `;
 
 const SearchInput = styled.input`
@@ -165,10 +167,15 @@ const SideMenu = ({
 	const [searchValue, setSearchValue] = useState("");
 	const [isOpen, setIsOpen] = useState(false);
 
-	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		setSearchValue(value);
-		onSearch?.(value);
+	const handleSearch = () => {
+		onSearch?.(searchValue);
+		setIsOpen(false);
+	};
+
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleSearch();
+		}
 	};
 
 	const handleClear = () => {
@@ -180,6 +187,7 @@ const SideMenu = ({
 		setSearchValue("");
 		onSearch?.("");
 		onSelect?.(item);
+		setIsOpen(false);
 	};
 
 	const menuItems = ["全部作品", ...categoryList];
@@ -192,18 +200,21 @@ const SideMenu = ({
 			</MenuTitle>
 			<MenuContent isOpen={isOpen}>
 				<SearchContainer>
-					<SearchIcon />
-					<SearchInput
-						type="text"
-						placeholder="搜尋卡牌..."
-						value={searchValue}
-						onChange={handleSearch}
-					/>
-					{searchValue && (
-						<ClearButton onClick={handleClear}>
-							<FaTimes />
-						</ClearButton>
-					)}
+					<div style={{ position: "relative", flex: 1 }}>
+						<SearchIcon />
+						<SearchInput
+							type="text"
+							placeholder="搜尋卡牌..."
+							value={searchValue}
+							onChange={(e) => setSearchValue(e.target.value)}
+							onKeyDown={handleKeyPress}
+						/>
+						{searchValue && (
+							<ClearButton onClick={handleClear}>
+								<FaTimes />
+							</ClearButton>
+						)}
+					</div>
 				</SearchContainer>
 				<MenuList>
 					{menuItems.map((item) => (
