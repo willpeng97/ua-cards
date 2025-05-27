@@ -151,7 +151,7 @@ const ProductList = ({
 	isLoading = false,
 }: ProductListProps) => {
 	const [isSortOpen, setIsSortOpen] = useState(false);
-	const [sortBy, setSortBy] = useState("nameAsc");
+	const [sortBy, setSortBy] = useState("default");
 	const [displayCount, setDisplayCount] = useState(INITIAL_ITEMS);
 
 	// 當分類改變時重置顯示數量、排序方式
@@ -163,6 +163,8 @@ const ProductList = ({
 			setSortBy("priceDesc");
 		} else if (title === "卡牌保護套") {
 			setSortBy("codeAsc");
+		} else {
+			setSortBy("default");
 		}
 	}, [title]);
 
@@ -192,8 +194,9 @@ const ProductList = ({
 				return b.stock - a.stock;
 			case "codeAsc": // 保護套排序
 				return getNumber(a.code) - getNumber(b.code);
+			case "default":
 			default:
-				return 0;
+				return 0; // 保持原始順序
 		}
 	});
 
@@ -214,6 +217,7 @@ const ProductList = ({
 						<FaChevronDown size={12} />
 					</SortButton>
 					<SortOptions isOpen={isSortOpen}>
+						<SortOption onClick={() => handleSort("default")}>預設</SortOption>
 						<SortOption onClick={() => handleSort("nameAsc")}>
 							名稱 A-Z
 						</SortOption>
