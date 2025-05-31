@@ -7,16 +7,7 @@ import {
 } from "../components/HomeCarousel";
 import { useState, useCallback, useEffect } from "react";
 import { commonApi } from "../api/commonApi";
-
-interface Product {
-	id: number;
-	image: string;
-	title: string;
-	code: string;
-	price: number;
-	stock: number;
-	category: string;
-}
+import { Product } from "../types/ProductTypes";
 
 // 原有的 MainContent 樣式
 const MainContent = styled.div`

@@ -425,7 +425,7 @@ const Navbar = () => {
 					<img src={logo} alt="Logo" />
 				</Logo>
 				<NavLinks>
-					<NavLink to="/">首頁</NavLink>
+					<NavLink to="/">商品一覽</NavLink>
 					<NavButton
 						className="nav-popup-trigger"
 						onClick={() => togglePopup("guide")}

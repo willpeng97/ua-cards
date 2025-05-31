@@ -1,14 +1,20 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaChevronRight, FaHome } from "react-icons/fa";
+import {
+	HiOutlineSortAscending,
+	HiOutlineSortDescending,
+} from "react-icons/hi";
 import ProductCard from "./ProductCard";
 import LoadingSpinner from "./LoadingSpinner";
+import { Popover } from "antd";
+import { Product } from "../types/ProductTypes";
 
 const ProductListContainer = styled.div`
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 8px;
 	background-color: var(--neutral-100);
 	padding: 16px;
 `;
@@ -23,71 +29,65 @@ const ProductGrid = styled.div`
 	}
 `;
 
-const CategoryTitle = styled.h2`
-	color: var(--neutral-800);
-	font-size: var(--font-size-large);
-	margin: 0;
-	padding-bottom: 8px;
-	border-bottom: 2px solid var(--primary-color);
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-`;
-
 const SortContainer = styled.div`
-	position: relative;
 	display: flex;
 	align-items: center;
-	gap: 0.5rem;
+	background: var(--neutral-300);
+	border-radius: 4px;
 `;
 
-const SortButton = styled.button`
-	background: none;
+const SortButton = styled.button<{ isActive?: boolean }>`
+	background: ${(props) =>
+		props.isActive ? "var(--primary-color)" : "transparent"};
+	color: ${(props) => (props.isActive ? "white" : "var(--neutral-600)")};
 	border: none;
-	color: var(--neutral-600);
+	padding: 0.5rem 1rem;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	gap: 0.25rem;
 	font-size: 0.9rem;
-	padding: 0.25rem 0.5rem;
-	border-radius: 4px;
 	transition: all 0.2s ease;
 
 	&:hover {
-		color: var(--primary-color);
-		background: rgba(255, 107, 0, 0.1);
+		background: ${(props) =>
+			props.isActive ? "var(--primary-color)" : "var(--neutral-200)"};
 	}
 `;
 
-const SortOptions = styled.div<{ isOpen: boolean }>`
-	position: absolute;
-	top: 100%;
-	right: 0;
-	background: white;
-	border-radius: 8px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	padding: 0.5rem;
-	z-index: 1000;
-	display: ${(props) => (props.isOpen ? "block" : "none")};
-	min-width: 150px;
+const PriceRangeContainer = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0 0.5rem;
 `;
 
-const SortOption = styled.button`
-	width: 100%;
-	text-align: left;
-	padding: 0.5rem;
-	border: none;
-	background: none;
-	color: var(--neutral-800);
-	cursor: pointer;
+const PriceInput = styled.input`
+	width: 80px;
+	padding: 0.2rem 0.25rem;
+	border: 1px solid var(--neutral-300);
 	font-size: 0.9rem;
-	border-radius: 4px;
-	transition: all 0.2s ease;
+
+	&:focus {
+		outline: none;
+		border-color: var(--primary-color);
+	}
+`;
+
+const PriceSeparator = styled.span`
+	color: var(--neutral-500);
+`;
+
+const ApplyButton = styled.button`
+	background: var(--neutral-900);
+	color: white;
+	border: none;
+	padding: 0.2rem 0.5rem;
+	cursor: pointer;
+	font-size: 0.8rem;
 
 	&:hover {
-		background: rgba(255, 107, 0, 0.1);
-		color: var(--primary-color);
+		background: var(--neutral-800);
 	}
 `;
 
@@ -127,15 +127,69 @@ const LoadMoreButton = styled.button`
 	}
 `;
 
-interface Product {
-	image: string;
-	title: string;
-	code: string;
-	price: number;
-	stock: number;
-	category: string;
-	levelWeight?: number;
-}
+const StockFilter = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding-left: 1rem;
+`;
+
+const RarityFilter = styled.div`
+	padding-left: 1rem;
+`;
+
+const RarityFilterButton = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	cursor: pointer;
+	font-size: 0.9rem;
+
+	&:hover {
+		color: var(--primary-color);
+	}
+`;
+
+const RarityCheckboxContainer = styled.div`
+	display: flex;
+	gap: 1rem;
+`;
+
+const CheckboxLabel = styled.label`
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	cursor: pointer;
+	color: var(--neutral-700);
+	font-size: 0.9rem;
+	user-select: none;
+
+	input[type="checkbox"] {
+		width: 16px;
+		height: 16px;
+		cursor: pointer;
+	}
+`;
+
+const BreadcrumbContainer = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 0;
+	color: var(--neutral-600);
+	font-size: 0.9rem;
+`;
+
+const BreadcrumbItem = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+`;
+
+const BreadcrumbSeparator = styled(FaChevronRight)`
+	font-size: 0.8rem;
+	color: var(--neutral-400);
+`;
 
 interface ProductListProps {
 	products: Product[];
@@ -151,13 +205,17 @@ const ProductList = ({
 	title,
 	isLoading = false,
 }: ProductListProps) => {
-	const [isSortOpen, setIsSortOpen] = useState(false);
 	const [sortBy, setSortBy] = useState("default");
 	const [displayCount, setDisplayCount] = useState(INITIAL_ITEMS);
+	const [priceRange, setPriceRange] = useState({ min: "", max: "" });
+	const [tempPriceRange, setTempPriceRange] = useState({ min: "", max: "" });
+	const [showInStockOnly, setShowInStockOnly] = useState(true);
 
-	// 當分類改變時重置顯示數量、排序方式
+	// 當分類改變時重置顯示數量和排序方式
 	useEffect(() => {
 		setDisplayCount(INITIAL_ITEMS);
+		setPriceRange({ min: "", max: "" });
+		setTempPriceRange({ min: "", max: "" });
 
 		// 客製化排序
 		if (title === "二星 & 三星 & AP") {
@@ -171,34 +229,47 @@ const ProductList = ({
 
 	const handleSort = (type: string) => {
 		setSortBy(type);
-		setIsSortOpen(false);
 		setDisplayCount(INITIAL_ITEMS);
 	};
 
-	const sortedProducts = [...products].sort((a, b) => {
-		// 提取編號中的數字部分進行排序，for 保護套
-		const getNumber = (code: string) =>
-			parseInt(code.match(/\d+$/)?.[0] || "0");
+	const handlePriceChange = (type: "min" | "max", value: string) => {
+		setTempPriceRange((prev) => ({
+			...prev,
+			[type]: value.replace(/[^0-9]/g, ""),
+		}));
+	};
 
+	const handleApplyPriceRange = () => {
+		setPriceRange(tempPriceRange);
+		setDisplayCount(INITIAL_ITEMS);
+	};
+
+	const filteredProducts = products.filter((product) => {
+		// 庫存篩選
+		if (showInStockOnly && product.stock <= 0) {
+			return false;
+		}
+
+		// 價格範圍篩選
+		if (priceRange.min && product.price < Number(priceRange.min)) {
+			return false;
+		}
+		if (priceRange.max && product.price > Number(priceRange.max)) {
+			return false;
+		}
+		return true;
+	});
+
+	const sortedProducts = [...filteredProducts].sort((a, b) => {
 		switch (sortBy) {
 			case "priceAsc":
 				return a.price - b.price;
 			case "priceDesc":
 				return b.price - a.price;
-			case "nameAsc":
-				return a.title.localeCompare(b.title);
-			case "nameDesc":
-				return b.title.localeCompare(a.title);
-			case "stockAsc":
-				return a.stock - b.stock;
-			case "stockDesc":
-				return b.stock - a.stock;
-			case "codeAsc": // 保護套排序
-				return getNumber(a.code) - getNumber(b.code);
-			case "weightDesc": // 依權重排序（高到低）
-				return (b.levelWeight || 0) - (a.levelWeight || 0);
-			case "weightAsc": // 依權重排序（低到高）
-				return (a.levelWeight || 0) - (b.levelWeight || 0);
+			case "levelWeightAsc":
+				return a.levelWeight - b.levelWeight;
+			case "levelWeightDesc":
+				return b.levelWeight - a.levelWeight;
 			case "default":
 			default:
 				return 0; // 保持原始順序
@@ -214,42 +285,115 @@ const ProductList = ({
 
 	return (
 		<ProductListContainer>
-			<CategoryTitle>
-				<span>{title ? `${title}` : "全部商品"}</span>
-				<SortContainer>
-					<SortButton onClick={() => setIsSortOpen(!isSortOpen)}>
-						排序
-						<FaChevronDown size={12} />
-					</SortButton>
-					<SortOptions isOpen={isSortOpen}>
-						<SortOption onClick={() => handleSort("default")}>預設</SortOption>
-						<SortOption onClick={() => handleSort("nameAsc")}>
-							名稱 A-Z
-						</SortOption>
-						<SortOption onClick={() => handleSort("nameDesc")}>
-							名稱 Z-A
-						</SortOption>
-						<SortOption onClick={() => handleSort("priceAsc")}>
-							價格由低到高
-						</SortOption>
-						<SortOption onClick={() => handleSort("priceDesc")}>
-							價格由高到低
-						</SortOption>
-						<SortOption onClick={() => handleSort("stockAsc")}>
-							庫存由低到高
-						</SortOption>
-						<SortOption onClick={() => handleSort("stockDesc")}>
-							庫存由高到低
-						</SortOption>
-						<SortOption onClick={() => handleSort("weightDesc")}>
-							稀有度由高到低
-						</SortOption>
-						<SortOption onClick={() => handleSort("weightAsc")}>
-							稀有度由低到高
-						</SortOption>
-					</SortOptions>
-				</SortContainer>
-			</CategoryTitle>
+			<BreadcrumbContainer>
+				<BreadcrumbItem>
+					<FaHome size={14} />
+					商品一覽
+				</BreadcrumbItem>
+				<BreadcrumbSeparator />
+				<BreadcrumbItem>{title ? title : "全部商品"}</BreadcrumbItem>
+			</BreadcrumbContainer>
+
+			<SortContainer>
+				<SortButton
+					isActive={sortBy === "default"}
+					onClick={() => handleSort("default")}
+				>
+					綜合排序
+				</SortButton>
+				<SortButton
+					isActive={sortBy === "levelWeightAsc" || sortBy === "levelWeightDesc"}
+					onClick={() =>
+						handleSort(
+							sortBy === "levelWeightAsc" ? "levelWeightDesc" : "levelWeightAsc"
+						)
+					}
+				>
+					稀有度
+					{sortBy === "levelWeightAsc" ? (
+						<HiOutlineSortAscending />
+					) : (
+						<HiOutlineSortDescending />
+					)}
+				</SortButton>
+				<SortButton
+					isActive={sortBy === "priceAsc" || sortBy === "priceDesc"}
+					onClick={() =>
+						handleSort(sortBy === "priceAsc" ? "priceDesc" : "priceAsc")
+					}
+				>
+					價格
+					{sortBy === "priceAsc" ? (
+						<HiOutlineSortAscending />
+					) : (
+						<HiOutlineSortDescending />
+					)}
+				</SortButton>
+				<PriceRangeContainer>
+					<PriceInput
+						type="text"
+						placeholder="最低價"
+						value={tempPriceRange.min}
+						onChange={(e) => handlePriceChange("min", e.target.value)}
+					/>
+					<PriceSeparator>~</PriceSeparator>
+					<PriceInput
+						type="text"
+						placeholder="最高價"
+						value={tempPriceRange.max}
+						onChange={(e) => handlePriceChange("max", e.target.value)}
+					/>
+					<ApplyButton onClick={handleApplyPriceRange}>確認</ApplyButton>
+				</PriceRangeContainer>
+				<StockFilter>
+					<CheckboxLabel>
+						<input
+							type="checkbox"
+							checked={showInStockOnly}
+							onChange={(e) => {
+								setShowInStockOnly(e.target.checked);
+								setDisplayCount(INITIAL_ITEMS);
+							}}
+						/>
+						僅顯示有庫存
+					</CheckboxLabel>
+				</StockFilter>
+				<RarityFilter>
+					<Popover
+						trigger="click"
+						placement="bottomRight"
+						content={
+							<RarityCheckboxContainer>
+								<CheckboxLabel>
+									<input type="checkbox" />R
+								</CheckboxLabel>
+								<CheckboxLabel>
+									<input type="checkbox" />
+									SRS
+								</CheckboxLabel>
+								<CheckboxLabel>
+									<input type="checkbox" />
+									RS
+								</CheckboxLabel>
+								<CheckboxLabel>
+									<input type="checkbox" />
+									US
+								</CheckboxLabel>
+								<CheckboxLabel>
+									<input type="checkbox" />
+									CS
+								</CheckboxLabel>
+							</RarityCheckboxContainer>
+						}
+					>
+						<RarityFilterButton>
+							稀有度過濾
+							<FaChevronDown />
+						</RarityFilterButton>
+					</Popover>
+				</RarityFilter>
+			</SortContainer>
+
 			{isLoading ? (
 				<LoadingSpinner />
 			) : sortedProducts.length === 0 ? (

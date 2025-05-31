@@ -6,7 +6,8 @@ interface Card {
 	price: number;
 	stock: number;
 	category: string;
-	levelWeight?: number;
+	levelWeight: number;
+	rarity: string;
 }
 
 interface Carousel {
@@ -26,6 +27,12 @@ export const commonApi = {
 	// 取得卡片列表
 	getCards: async (): Promise<Card[]> => {
 		// 獲取卡牌等級的權重
+
+		const getCardRarity = (code: string) => {
+			const parts = code.split("/");
+			const lastPart = parts[parts.length - 1];
+			if (["SRS", "RS", "US", "CS", "R"].includes(lastPart)) return lastPart;
+		};
 		const getCardLevelWeight = (code: string) => {
 			const parts = code.split("/");
 			const lastPart = parts[parts.length - 1];
@@ -51,6 +58,7 @@ export const commonApi = {
 				...card,
 				price: Math.floor(card.price / 5),
 				levelWeight: getCardLevelWeight(card.code),
+				rarity: getCardRarity(card.code),
 			}));
 
 			return cards;
