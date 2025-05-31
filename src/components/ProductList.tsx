@@ -398,7 +398,7 @@ const ProductList = ({
 										checked={selectedLevelWeight.includes(4)}
 										onChange={() => handleLevelWeightChange(4)}
 									/>
-									星卡
+									UR & 紅卡
 								</CheckboxLabel>
 								<CheckboxLabel>
 									<input

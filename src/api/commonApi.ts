@@ -27,7 +27,12 @@ export const commonApi = {
 		const getCardLevelWeight = (code: string) => {
 			const parts = code.split("/");
 			const lastPart = parts[parts.length - 1];
-			if (["SRSS", "RSS"].includes(lastPart)) return 4;
+			if (
+				["SRSS", "RSS", "AP", "RC", "3rd", "BGC", "S", "OBCW"].includes(
+					lastPart
+				)
+			)
+				return 4;
 			if (["SRS", "RS", "US", "CS"].includes(lastPart)) return 3;
 			if (["R"].includes(lastPart)) return 2;
 			return 1;
