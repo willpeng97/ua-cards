@@ -34,6 +34,7 @@ const SortContainer = styled.div`
 	align-items: center;
 	background: var(--neutral-300);
 	border-radius: 4px;
+	overflow-x: auto;
 `;
 
 const SortButton = styled.button<{ isActive?: boolean }>`
@@ -48,6 +49,7 @@ const SortButton = styled.button<{ isActive?: boolean }>`
 	gap: 0.25rem;
 	font-size: 0.9rem;
 	transition: all 0.2s ease;
+	white-space: nowrap;
 
 	&:hover {
 		background: ${(props) =>
@@ -60,6 +62,7 @@ const PriceRangeContainer = styled.div`
 	align-items: center;
 	gap: 0.25rem;
 	padding: 0 0.5rem;
+	white-space: nowrap;
 `;
 
 const PriceInput = styled.input`
@@ -132,6 +135,7 @@ const StockFilter = styled.div`
 	align-items: center;
 	gap: 0.5rem;
 	padding-left: 1rem;
+	white-space: nowrap;
 `;
 
 const LevelWeightFilter = styled.div`
@@ -144,6 +148,7 @@ const LevelWeightFilterButton = styled.div`
 	gap: 0.25rem;
 	cursor: pointer;
 	font-size: 0.9rem;
+	white-space: nowrap;
 
 	&:hover {
 		color: var(--primary-color);
@@ -153,6 +158,7 @@ const LevelWeightFilterButton = styled.div`
 const LevelWeightCheckboxContainer = styled.div`
 	display: flex;
 	gap: 1rem;
+	white-space: nowrap;
 `;
 
 const CheckboxLabel = styled.label`
@@ -422,7 +428,7 @@ const ProductList = ({
 						}
 					>
 						<LevelWeightFilterButton>
-							稀有度過濾
+							稀有度選項
 							<FaChevronDown />
 						</LevelWeightFilterButton>
 					</Popover>
