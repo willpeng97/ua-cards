@@ -7,7 +7,7 @@ import ReportPage from "./pages/ReportPage";
 import NoticePage from "./pages/NoticePage";
 import CheckoutPage from "./pages/Checkout";
 import ScrollToTop from "./components/ScrollToTop";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CartProvider } from "./contexts/CartContext";
 
 const AppContainer = styled.div`
@@ -31,12 +31,14 @@ const MainContent = styled.main`
 function App() {
 	return (
 		<CartProvider>
-			<HashRouter>
+			<BrowserRouter basename="/shop">
 				<GlobalStyles />
 				<AppContainer>
 					<Navbar />
 					<MainContent>
 						<Routes>
+							{/* 自動導向到首頁 */}
+							<Route path="/index.html" element={<Navigate to="/" replace />} />
 							<Route path="/" element={<HomePage />} />
 							<Route path="/report" element={<ReportPage />} />
 							<Route path="/notice" element={<NoticePage />} />
@@ -46,7 +48,7 @@ function App() {
 					<Footer />
 					<ScrollToTop />
 				</AppContainer>
-			</HashRouter>
+			</BrowserRouter>
 		</CartProvider>
 	);
 }

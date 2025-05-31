@@ -333,7 +333,9 @@ const ProductList = ({
 					isActive={sortBy === "levelWeightAsc" || sortBy === "levelWeightDesc"}
 					onClick={() =>
 						handleSort(
-							sortBy === "levelWeightAsc" ? "levelWeightDesc" : "levelWeightAsc"
+							sortBy === "levelWeightDesc"
+								? "levelWeightAsc"
+								: "levelWeightDesc"
 						)
 					}
 				>
@@ -347,7 +349,7 @@ const ProductList = ({
 				<SortButton
 					isActive={sortBy === "priceAsc" || sortBy === "priceDesc"}
 					onClick={() =>
-						handleSort(sortBy === "priceAsc" ? "priceDesc" : "priceAsc")
+						handleSort(sortBy === "priceDesc" ? "priceAsc" : "priceDesc")
 					}
 				>
 					價格
@@ -398,7 +400,7 @@ const ProductList = ({
 										checked={selectedLevelWeight.includes(4)}
 										onChange={() => handleLevelWeightChange(4)}
 									/>
-									UR & 紅卡
+									特殊卡
 								</CheckboxLabel>
 								<CheckboxLabel>
 									<input
@@ -406,7 +408,7 @@ const ProductList = ({
 										checked={selectedLevelWeight.includes(3)}
 										onChange={() => handleLevelWeightChange(3)}
 									/>
-									SR
+									星卡
 								</CheckboxLabel>
 								<CheckboxLabel>
 									<input
@@ -414,7 +416,7 @@ const ProductList = ({
 										checked={selectedLevelWeight.includes(2)}
 										onChange={() => handleLevelWeightChange(2)}
 									/>
-									R
+									SR
 								</CheckboxLabel>
 								<CheckboxLabel>
 									<input
@@ -422,7 +424,7 @@ const ProductList = ({
 										checked={selectedLevelWeight.includes(1)}
 										onChange={() => handleLevelWeightChange(1)}
 									/>
-									一般
+									R
 								</CheckboxLabel>
 							</LevelWeightCheckboxContainer>
 						}
