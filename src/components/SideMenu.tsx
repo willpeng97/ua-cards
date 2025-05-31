@@ -142,6 +142,9 @@ const MenuItem = styled.li<{ isActive?: boolean }>`
 	}
 
 	@media (max-width: 768px) {
+		text-overflow: clip;
+		overflow: hidden;
+		white-space: normal;
 		margin-bottom: 0.5rem;
 		border-right: 1px solid var(--neutral-500);
 		border-left: none;
