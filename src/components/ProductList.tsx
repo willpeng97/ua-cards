@@ -70,7 +70,7 @@ const SortOptions = styled.div<{ isOpen: boolean }>`
 	padding: 0.5rem;
 	z-index: 1000;
 	display: ${(props) => (props.isOpen ? "block" : "none")};
-	min-width: 120px;
+	min-width: 150px;
 `;
 
 const SortOption = styled.button`
@@ -134,6 +134,7 @@ interface Product {
 	price: number;
 	stock: number;
 	category: string;
+	levelWeight?: number;
 }
 
 interface ProductListProps {
@@ -194,6 +195,10 @@ const ProductList = ({
 				return b.stock - a.stock;
 			case "codeAsc": // 保護套排序
 				return getNumber(a.code) - getNumber(b.code);
+			case "weightDesc": // 依權重排序（高到低）
+				return (b.levelWeight || 0) - (a.levelWeight || 0);
+			case "weightAsc": // 依權重排序（低到高）
+				return (a.levelWeight || 0) - (b.levelWeight || 0);
 			case "default":
 			default:
 				return 0; // 保持原始順序
@@ -235,6 +240,12 @@ const ProductList = ({
 						</SortOption>
 						<SortOption onClick={() => handleSort("stockDesc")}>
 							庫存由高到低
+						</SortOption>
+						<SortOption onClick={() => handleSort("weightDesc")}>
+							稀有度由高到低
+						</SortOption>
+						<SortOption onClick={() => handleSort("weightAsc")}>
+							稀有度由低到高
 						</SortOption>
 					</SortOptions>
 				</SortContainer>
