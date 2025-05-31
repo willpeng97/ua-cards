@@ -217,7 +217,7 @@ const ProductList = ({
 	const [tempPriceRange, setTempPriceRange] = useState({ min: "", max: "" });
 	const [showInStockOnly, setShowInStockOnly] = useState(true);
 	const [selectedLevelWeight, setSelectedLevelWeight] = useState<number[]>([
-		1, 2, 3, 4,
+		0, 1, 2, 3, 4,
 	]);
 
 	// 當分類改變時重置顯示數量和排序方式
@@ -425,6 +425,14 @@ const ProductList = ({
 										onChange={() => handleLevelWeightChange(1)}
 									/>
 									R
+								</CheckboxLabel>
+								<CheckboxLabel>
+									<input
+										type="checkbox"
+										checked={selectedLevelWeight.includes(0)}
+										onChange={() => handleLevelWeightChange(0)}
+									/>
+									其他
 								</CheckboxLabel>
 							</LevelWeightCheckboxContainer>
 						}

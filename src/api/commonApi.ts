@@ -28,14 +28,31 @@ export const commonApi = {
 			const parts = code.split("/");
 			const lastPart = parts[parts.length - 1];
 			if (
-				["SRSS", "RSS", "AP", "RC", "3rd", "BGC", "S", "OBCW"].includes(
-					lastPart
-				)
+				[
+					"SRSSS",
+					"SRSS",
+					"USSS",
+					"RSS",
+					"AP",
+					"RC",
+					"3rd",
+					"BGC",
+					"S",
+					"OBCW",
+				].includes(lastPart)
 			)
 				return 4; // 特殊卡 (二星 & 三星 & AP)
 			if (["SRS", "RS", "US", "CS"].includes(lastPart)) return 3; // 星卡
-			if (["R"].includes(lastPart)) return 1; // R卡
-			return 2; // SR卡
+			if (["C", "R"].includes(lastPart)) return 1; // R卡
+
+			if (parts.length === 2) {
+				// 檢查是否包含 AP 字符
+				if (lastPart.includes("AP")) return 4; // 特殊卡 (AP)
+				// 檢查是否包含三個連續數字
+				if (/\d{3}/.test(lastPart)) return 2; // R卡
+			}
+
+			return 0; // 其他
 		};
 
 		try {
