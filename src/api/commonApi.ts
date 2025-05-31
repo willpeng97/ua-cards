@@ -39,11 +39,12 @@ export const commonApi = {
 					"BGC",
 					"S",
 					"OBCW",
+					"C",
 				].includes(lastPart)
 			)
 				return 4; // 特殊卡 (二星 & 三星 & AP)
 			if (["SRS", "RS", "US", "CS"].includes(lastPart)) return 3; // 星卡
-			if (["C", "R"].includes(lastPart)) return 1; // R卡
+			if (["R"].includes(lastPart)) return 1; // R卡
 
 			if (parts.length === 2) {
 				// 檢查是否包含 AP 字符
