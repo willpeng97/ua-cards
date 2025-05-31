@@ -31,7 +31,6 @@ const MainContent = styled.main`
 function App() {
 	return (
 		<CartProvider>
-			{/* <BrowserRouter basename="/shop"> */}
 			<HashRouter>
 				<GlobalStyles />
 				<AppContainer>
