@@ -134,11 +134,11 @@ const StockFilter = styled.div`
 	padding-left: 1rem;
 `;
 
-const RarityFilter = styled.div`
+const LevelWeightFilter = styled.div`
 	padding-left: 1rem;
 `;
 
-const RarityFilterButton = styled.div`
+const LevelWeightFilterButton = styled.div`
 	display: flex;
 	align-items: center;
 	gap: 0.25rem;
@@ -150,7 +150,7 @@ const RarityFilterButton = styled.div`
 	}
 `;
 
-const RarityCheckboxContainer = styled.div`
+const LevelWeightCheckboxContainer = styled.div`
 	display: flex;
 	gap: 1rem;
 `;
@@ -210,6 +210,9 @@ const ProductList = ({
 	const [priceRange, setPriceRange] = useState({ min: "", max: "" });
 	const [tempPriceRange, setTempPriceRange] = useState({ min: "", max: "" });
 	const [showInStockOnly, setShowInStockOnly] = useState(true);
+	const [selectedLevelWeight, setSelectedLevelWeight] = useState<number[]>([
+		1, 2, 3, 4,
+	]);
 
 	// 當分類改變時重置顯示數量和排序方式
 	useEffect(() => {
@@ -244,6 +247,16 @@ const ProductList = ({
 		setDisplayCount(INITIAL_ITEMS);
 	};
 
+	const handleLevelWeightChange = (levelWeight: number) => {
+		setSelectedLevelWeight((prev) => {
+			if (prev.includes(levelWeight)) {
+				return prev.filter((r) => r !== levelWeight);
+			}
+			return [...prev, levelWeight];
+		});
+		setDisplayCount(INITIAL_ITEMS);
+	};
+
 	const filteredProducts = products.filter((product) => {
 		// 庫存篩選
 		if (showInStockOnly && product.stock <= 0) {
@@ -257,6 +270,15 @@ const ProductList = ({
 		if (priceRange.max && product.price > Number(priceRange.max)) {
 			return false;
 		}
+
+		// 稀有度篩選
+		if (
+			selectedLevelWeight.length > 0 &&
+			!selectedLevelWeight.includes(product.levelWeight)
+		) {
+			return false;
+		}
+
 		return true;
 	});
 
@@ -358,40 +380,53 @@ const ProductList = ({
 						僅顯示有庫存
 					</CheckboxLabel>
 				</StockFilter>
-				<RarityFilter>
+				<LevelWeightFilter>
 					<Popover
 						trigger="click"
 						placement="bottomRight"
 						content={
-							<RarityCheckboxContainer>
+							<LevelWeightCheckboxContainer>
 								<CheckboxLabel>
-									<input type="checkbox" />R
+									<input
+										type="checkbox"
+										checked={selectedLevelWeight.includes(4)}
+										onChange={() => handleLevelWeightChange(4)}
+									/>
+									星卡
 								</CheckboxLabel>
 								<CheckboxLabel>
-									<input type="checkbox" />
-									SRS
+									<input
+										type="checkbox"
+										checked={selectedLevelWeight.includes(3)}
+										onChange={() => handleLevelWeightChange(3)}
+									/>
+									SR
 								</CheckboxLabel>
 								<CheckboxLabel>
-									<input type="checkbox" />
-									RS
+									<input
+										type="checkbox"
+										checked={selectedLevelWeight.includes(2)}
+										onChange={() => handleLevelWeightChange(2)}
+									/>
+									R
 								</CheckboxLabel>
 								<CheckboxLabel>
-									<input type="checkbox" />
-									US
+									<input
+										type="checkbox"
+										checked={selectedLevelWeight.includes(1)}
+										onChange={() => handleLevelWeightChange(1)}
+									/>
+									一般
 								</CheckboxLabel>
-								<CheckboxLabel>
-									<input type="checkbox" />
-									CS
-								</CheckboxLabel>
-							</RarityCheckboxContainer>
+							</LevelWeightCheckboxContainer>
 						}
 					>
-						<RarityFilterButton>
+						<LevelWeightFilterButton>
 							稀有度過濾
 							<FaChevronDown />
-						</RarityFilterButton>
+						</LevelWeightFilterButton>
 					</Popover>
-				</RarityFilter>
+				</LevelWeightFilter>
 			</SortContainer>
 
 			{isLoading ? (

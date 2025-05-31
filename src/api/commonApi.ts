@@ -1,14 +1,4 @@
-interface Card {
-	id: number;
-	image: string;
-	title: string;
-	code: string;
-	price: number;
-	stock: number;
-	category: string;
-	levelWeight: number;
-	rarity: string;
-}
+import { Product as Card } from "../types/ProductTypes";
 
 interface Carousel {
 	id: number;
@@ -26,16 +16,18 @@ interface ReportData {
 export const commonApi = {
 	// 取得卡片列表
 	getCards: async (): Promise<Card[]> => {
-		// 獲取卡牌等級的權重
+		// 獲取卡牌稀有度
+		// const getCardRarity = (code: string) => {
+		// 	const parts = code.split("/");
+		// 	const lastPart = parts[parts.length - 1];
+		// 	if (["SRS", "RS", "US", "CS", "R"].includes(lastPart)) return lastPart;
+		// };
 
-		const getCardRarity = (code: string) => {
-			const parts = code.split("/");
-			const lastPart = parts[parts.length - 1];
-			if (["SRS", "RS", "US", "CS", "R"].includes(lastPart)) return lastPart;
-		};
+		// 獲取卡牌等級的權重
 		const getCardLevelWeight = (code: string) => {
 			const parts = code.split("/");
 			const lastPart = parts[parts.length - 1];
+			if (["SRSS", "RSS"].includes(lastPart)) return 4;
 			if (["SRS", "RS", "US", "CS"].includes(lastPart)) return 3;
 			if (["R"].includes(lastPart)) return 2;
 			return 1;
@@ -58,7 +50,7 @@ export const commonApi = {
 				...card,
 				price: Math.floor(card.price / 5),
 				levelWeight: getCardLevelWeight(card.code),
-				rarity: getCardRarity(card.code),
+				// rarity: getCardRarity(card.code),
 			}));
 
 			return cards;

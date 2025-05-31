@@ -6,5 +6,5 @@ export interface Product {
 	stock: number;
 	category: string;
 	levelWeight: number;
-	rarity: string;
+	// rarity: string;
 }
